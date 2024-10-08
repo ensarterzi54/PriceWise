@@ -1,41 +1,44 @@
-import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
+import Link from 'next/link'
 import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router';
 
-const Login = () => {
-    const { signInWithGoogle, signInEmailPassword } = useContext(AuthContext)
+const SignIn = () => {
+    const { createUserEmailAndPassword } = useContext(AuthContext)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const router = useRouter();
 
-    const login = (email, password) => {
-        //giriş yap metodu (email ve password)
-        signInEmailPassword(email, password)
+    const createUser = (email, password) => {
+        createUserEmailAndPassword(email, password)
+        router.push("/")
     }
 
     return (
-        <div className="login">
+        <div className="signIn">
             <div>
                 <h1><Link href="/">PriceWise</Link></h1>
+
+                <label htmlFor="name">Ad</label><br />
+                <input type="text" id="name" name="name" /><br /><br /><br />
+
+                <label htmlFor="sname">Soyad</label><br />
+                <input type="text" id="sname" name="sname" /><br /><br /><br />
+
                 <label htmlFor="mail">E-Posta</label><br />
                 <input type="email" id="mail" name="mail" value={email} onChange={(e) => setEmail(e.target.value)} /><br /><br /><br />
 
                 <label htmlFor="password">Şifre</label><br />
                 <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} /><br /> <br />
 
-                <button type="button" onClick={() => login(email, password)} >Giriş Yap</button> <br />
-
-                <button type="button" onClick={() => signInWithGoogle()}>Google ile giriş yap</button> <br />
-                
-                <Link href="/signIn">Hesap aç</Link>
+                <button type="button" onClick={() => createUser(email, password)}>Kayıt ol</button> <br />
             </div>
         </div>
-  )
+    )
 }
 
-Login.getLayout = function (page) {
+SignIn.getLayout = function (page) {
     return page;
 };
 
-export default Login
+export default SignIn

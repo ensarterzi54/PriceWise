@@ -1,13 +1,31 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 const NavBar = () => {
-    const { loginWithGoogle } = useContext(AuthContext)
+    const { signInWithGoogle, signOutWithGoogle, user } = useContext(AuthContext)
+    
+    const imgStyle = {
+        width: '30px',
+        borderRadius: '15px',
+        margin: '2px',
+    }
+
     return (
         <div>
             NavBar
-            <button onClick={() => loginWithGoogle()}>giriş</button>
+            { 
+                <>
+                    <img src={ user && user.photoURL } style={ imgStyle } alt="" /> 
+                    { user ? user.email : null }
+                </>
+            }
+            {
+                user ? <Link href="/" onClick={() => signOutWithGoogle()}>çıkış</Link> :
+                <Link href="/login">giriş</Link>
+            }
+            
+            
         </div>
     )
 }
