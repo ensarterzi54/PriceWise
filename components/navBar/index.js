@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
 const NavBar = () => {
-    const { signInWithGoogle, signOutWithGoogle, user } = useContext(AuthContext)
+    const { signOutWithGoogle, user } = useContext(AuthContext)
     
     const imgStyle = {
         width: '30px',
