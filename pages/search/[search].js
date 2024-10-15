@@ -24,7 +24,7 @@ const Search = () => {
                                 <div className="productCard mt-3" key={index}>
                                     <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                                     <span className="productName">{item.urunAdi}</span>
-                                    <span className="productPrice">${item.fiyat}</span>
+                                    <span className="productPrice ml-2 mr-2">{item.fiyat} TL</span>
                                     <button className="buyButton">Add to Cart</button>
                                 </div>
                             </div>

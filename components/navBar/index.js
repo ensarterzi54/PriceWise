@@ -60,7 +60,7 @@ const NavBar = () => {
                 { 
                     <>
                         <img src={ user && user.photoURL } style={ imgStyle } alt="" /> 
-                        { user ? user.displayName : null }
+                        { user ? user.email : null }
                     </>
                 }
                 {

@@ -73,6 +73,7 @@ const AuthContextProvider = ({ children }) => {
     }
 
     const createUserEmailAndPassword = (email, password) => { //yeni kullanıcı kayıt olur
+        console.log("çalıştıı:  ", email, password)
         createUserWithEmailAndPassword(auth, email, password)
             .then((res) => {
                 const user = res.user;
