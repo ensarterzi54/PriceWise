@@ -1,11 +1,14 @@
 import NavBar from '@/components/navBar'
+import ScrapeContextProvider from '@/contexts/ScrapeContext'
 import React from 'react'
 
 const Layout = ({ children }) => {
   return (
     <div>
-      <NavBar />
-      <main>{children}</main>
+      <ScrapeContextProvider>
+        <NavBar />
+        <main style={{ backgroundColor: "rgb(246, 246, 246)" }}>{children}</main>
+      </ScrapeContextProvider>
     </div>
   )
 }

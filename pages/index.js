@@ -1,7 +1,14 @@
 import Head from "next/head";
-import AuthContextProvider from "@/contexts/AuthContex";
+import { ScrapeContext } from "../contexts/ScrapeContext"
+import { useContext, useEffect } from "react";
 
-export default function Home() {
+const Home = () => {
+  const { getData, datas } = useContext(ScrapeContext)
+
+  useEffect(()=> {
+    console.log("datas: ", datas)
+  }, [datas])
+
   return (
     <>
       <Head>
@@ -12,7 +19,10 @@ export default function Home() {
       </Head>
       <div>
         home
+        
       </div>
     </>
   );
 }
+
+export default Home

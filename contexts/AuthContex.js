@@ -54,9 +54,9 @@ const AuthContextProvider = ({ children }) => {
         };
     
         postData().then((data) => {
-            alert(data.message);
+            // alert(data.message);
         }).catch((error) => {
-            alert(error.message);  // Hata mesajını kullanıcıya göster
+            // alert(error.message);  // Hata mesajını kullanıcıya göster
         });
     }
     const signInWithGoogle = () => {
