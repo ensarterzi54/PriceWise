@@ -38,12 +38,7 @@ const NavBar = () => {
                     sx={{ width: '75ch' }} 
                     label="Neyi ucuza aramak istersin?" 
                     variant="outlined" 
-                    size="small" 
-                    endAdornment={
-                        <InputAdornment >
-                          <SearchIcon position="end" />
-                        </InputAdornment>
-                    }
+                    size="small"
                     slotProps={{
                         input: {
                             endAdornment: 

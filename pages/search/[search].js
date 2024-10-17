@@ -20,7 +20,7 @@ const Search = () => {
                 <div className="col-md-9 pr-3">
                     {
                         datas ? datas.map((item, index) => 
-                            <div>
+                            <div key={item.uniqueKey}>
                                 <div className="productCard mt-3" key={index}>
                                     <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                                     <span className="productName">{item.urunAdi}</span>
