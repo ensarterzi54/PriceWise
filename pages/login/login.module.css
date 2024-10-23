@@ -1,0 +1,11 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Dikey hizalama */
+    height: 80vh; /* Yüksekliği tam ekran yap */
+}
+
+.inCard {
+    display: flex;
+    justify-content: center;
+}

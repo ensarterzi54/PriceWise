@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/router';
 import { Button, TextField } from "@mui/material";
-
+import styles from "./signIn.module.css"
 const SignIn = () => {
     const { createUserEmailAndPassword } = useContext(AuthContext)
     const [email, setEmail] = useState("")
@@ -16,7 +16,7 @@ const SignIn = () => {
     }
 
     return (
-        <div className="signIn">
+        <div className={styles.signIn}>
             <div>
                 <h1><Link href="/">PriceWise</Link></h1>
                 <h6>Devam etmek için hesap oluştur ya da <Link href="/login">Giriş yap</Link></h6>

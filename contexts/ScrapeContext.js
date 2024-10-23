@@ -37,10 +37,40 @@ const ScrapeContextProvider = ({ children }) => {
         });
     }
 
+    const getRandomData = () => {
+        console.log("çalışşştı")
+        const getData = async () => {
+            const response = await fetch("http://localhost:8080/api/products/homepage", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",  // JSON formatını belirtiyoruz
+                }
+            });
+            console.log(response)
+    
+            if (!response.ok) {
+                // Eğer hata durumu varsa fırlat
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An error occurred");
+            }
+    
+            return response.json();
+        };
+    
+        getData().then((data) => {
+            // alert(data.message);
+            console.log("dataaa: ",data)
+            setDatas(data)
+        }).catch((error) => {
+            // alert(error.message);  // Hata mesajını kullanıcıya göster
+        });
+    }
+
     
 
     return (
         <ScrapeContext.Provider value={{
+            getRandomData,
             getData,
             datas
         }}>

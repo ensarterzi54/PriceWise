@@ -3,5 +3,6 @@
     flex-direction: row;
     justify-content: space-between;
     background-color: rgb(255, 255, 255);
-    /* margin: 50px; */
+    padding-right: 200px;
+    padding-left: 200px;
 }

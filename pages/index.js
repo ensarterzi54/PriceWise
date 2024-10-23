@@ -3,11 +3,11 @@ import { ScrapeContext } from "../contexts/ScrapeContext"
 import { useContext, useEffect } from "react";
 
 const Home = () => {
-  const { getData, datas } = useContext(ScrapeContext)
+  const { datas, getRandomData } = useContext(ScrapeContext)
 
   useEffect(()=> {
-    console.log("datas: ", datas)
-  }, [datas])
+    getRandomData()
+  }, [])
 
   return (
     <>
@@ -17,9 +17,19 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        home
-        
+      <div className="container-fluid home">
+        <div className="cardRow">
+              {
+                datas ? datas.map((item) => 
+                  <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
+                    <div className="homeCard">
+                      <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
+                      <span className="prdctName">{item.urunAdi}</span>
+                    </div>
+                  </div>
+                ) : null
+              }
+        </div>
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import { ScrapeContext } from '../../contexts/ScrapeContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router';
+import styles from "../search/search.module.css"
 const Search = () => {
     const { getData, datas } = useContext(ScrapeContext)
     const router = useRouter();
@@ -13,20 +14,22 @@ const Search = () => {
     }, [search])
 
     return (
-        <div className="container">
+        <div className={`container ${styles.search}`}>
             <div className="row">
                 <div className="col-md-3">
                 </div>
-                <div className="col-md-9 pr-3">
+                <div className="col-md-9">
                     {
-                        datas ? datas.map((item, index) => 
-                            <div key={item.uniqueKey}>
-                                <div className="productCard mt-3" key={index}>
-                                    <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                                    <span className="productName">{item.urunAdi}</span>
-                                    <span className="productPrice ml-2 mr-2">{item.fiyat} TL</span>
-                                    <button className="buyButton">Add to Cart</button>
+                        datas ? datas.map((item) => 
+                            <div key={item.uniqueKey} className={`${styles.productCard} mt-3`}>
+                                <img src={item.resim_url} className={styles.productImage} alt={item.urunAdi} />
+                                <div className={`${styles.cardInfo} pb-2`}>
+                                    <span className={`${styles.productName} pb-2`}>{item.urunAdi}</span>
+                                    <span>{item.id}</span>
+                                    <span>{item.uniqueKey}</span>
+                                    <span className={`${styles.productPrice} ml-2 mr-2`}>{item.fiyat} TL</span>
                                 </div>
+                                <button className={styles.buyButton}>Add to Cart</button>
                             </div>
                         ) : null
                     }

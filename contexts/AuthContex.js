@@ -2,12 +2,14 @@ import { getAuth, onAuthStateChanged, signInWithPopup, signOut, createUserWithEm
 import { createContext, useEffect, useState } from "react";
 import { provider, database } from "../firebase/firebaseConfig"
 import { ref, set } from "firebase/database";
+import { useRouter } from 'next/router';
 
 export const AuthContext = createContext(null)
 const auth = getAuth();
 console.log("auth: ", auth)
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
+    const router = useRouter();
     
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -63,6 +65,7 @@ const AuthContextProvider = ({ children }) => {
         signInWithPopup(auth, provider).then((res) => {
             addUser(res.user.uid, res.user.displayName, res.user.email, res.user.emailVerified, res.providerId, res.user.photoURL, res.user.stsTokenManager.accessToken)
             setUser(res.user)
+            router.push("/")
         }).catch((err) => console.log(err))
     }
 
