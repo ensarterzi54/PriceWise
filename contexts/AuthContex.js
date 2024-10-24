@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { provider, database } from "../firebase/firebaseConfig"
 import { ref, set } from "firebase/database";
@@ -72,6 +72,7 @@ const AuthContextProvider = ({ children }) => {
     const signOutWithGoogle = () => {
         signOut(auth).then(() => {
             setUser(null)
+            router.push("/login")
           })
     }
 
@@ -92,14 +93,26 @@ const AuthContextProvider = ({ children }) => {
 
     const signInEmailPassword = (email, password) => {
         signInWithEmailAndPassword(auth, email, password)
+        router.push("/")
     }
 
+    const resetPassword = (email) => {
+        sendPasswordResetEmail(auth, email)
+            .then((res) => {
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
+    }
     return (
         <AuthContext.Provider value={{
             signInWithGoogle,
             signOutWithGoogle,
             createUserEmailAndPassword,
             signInEmailPassword,
+            resetPassword,
             user
         }}>
             { children }

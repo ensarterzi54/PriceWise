@@ -82,3 +82,7 @@ a {
     font-size: 12px;
     font-weight: 600;
 }
+
+.skeleton {
+  height: 100vh;
+}

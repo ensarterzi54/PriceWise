@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Avatar, IconButton, InputAdornment, Menu, MenuItem, MenuList, TextField } from "@mui/material"
 import { useRouter } from 'next/router';
 import SearchIcon from '@mui/icons-material/Search';
@@ -32,7 +32,7 @@ const NavBar = () => {
         textDecoration: "none",
         color: "inherit"
     }
-
+    
     return (
         <div className={`${styles.nav} pt-3 pb-2`}>
             <div className="mt-2" style={{fontWeight: "bold"}}>
@@ -109,20 +109,22 @@ const NavBar = () => {
                                                         <NotificationsNoneIcon />Takip Listem
                                                     </MenuItem>
                                                 </Link>
-
-                                                <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}><LogoutIcon />Çıkış Yap</MenuItem>
+                                                <Link href="/" style={linkStyle} onClick={() => signOutWithGoogle()}>
+                                                    <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}>
+                                                        <LogoutIcon />Çıkış Yap
+                                                    </MenuItem>
+                                                </Link>
                                             </MenuList>
                                         </Menu>
-                                    </> : null
+                                    </> :
+                                        <div className="pt-3">
+                                            <Link className="ml-2 mt-2" href="/login">Giriş Yap</Link>
+                                        </div> 
                         }
                         
                         {/* <img src={ user && user.photoURL } style={ imgStyle } alt="" />  */}
                         { user ? user.email : null }
                     </>
-                }
-                {
-                    user ? <Link className="ml-2" href="/" onClick={() => signOutWithGoogle()}>çıkış</Link> :
-                    <Link className="ml-2 mt-2" href="/login">Giriş Yap</Link>
                 }
             </div>
         </div>

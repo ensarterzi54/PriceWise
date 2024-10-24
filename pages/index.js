@@ -1,13 +1,24 @@
 import Head from "next/head";
 import { ScrapeContext } from "../contexts/ScrapeContext"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "@/contexts/AuthContex";
+import { LinearProgress, Skeleton } from "@mui/material";
 
 const Home = () => {
   const { datas, getRandomData } = useContext(ScrapeContext)
+  const { user } = useContext(AuthContext)
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(()=> {
     getRandomData()
-  }, [])
+    // 3 saniye sonra durumu değiştir
+    const timer = setTimeout(() => {
+      setShowMessage(true);
+    }, 500);
+
+    // Temizlik fonksiyonu
+    return () => clearTimeout(timer);
+  }, [user])
 
   return (
     <>
@@ -17,20 +28,46 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container-fluid home">
-        <div className="cardRow">
-              {
-                datas ? datas.map((item) => 
-                  <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
-                    <div className="homeCard">
-                      <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                      <span className="prdctName">{item.urunAdi}</span>
-                    </div>
-                  </div>
-                ) : null
-              }
+      {
+        console.log("yükllendi")
+      }
+      {showMessage ? (
+          user ? user.emailVerified ? 
+          <div className="container-fluid home">
+            <div className="cardRow">
+                  {
+                    datas ? datas.map((item) => 
+                      <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
+                        <div className="homeCard">
+                          <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
+                          <span className="prdctName">{item.urunAdi}</span>
+                        </div>
+                      </div>
+                    ) : null
+                  }
+            </div>
+          </div> :
+          <p>Lütfen mailinize gelen doğrulama kodunuzu onaylayın.</p> : 
+          <div className="container-fluid home">
+            <div className="cardRow">
+                  {
+                    datas ? datas.map((item) => 
+                      <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
+                        <div className="homeCard">
+                          <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
+                          <span className="prdctName mt-4">{item.urunAdi}</span>
+                          <span className="prdctName">{item.fiyat} TL</span>
+                        </div>
+                      </div>
+                    ) : null
+                  }
+            </div>
+          </div>
+      ) : (
+        <div className="skeleton">
+          <LinearProgress />
         </div>
-      </div>
+      )}
     </>
   );
 }

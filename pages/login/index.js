@@ -7,14 +7,13 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import styles from "../login/login.module.css"
 const Login = () => {
-    const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword } = useContext(AuthContext)
+    const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword, resetPassword } = useContext(AuthContext)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const router = useRouter();
 
     const login = (email, password) => {
         signInEmailPassword(email, password)
-        router.push("/")
     }
 
     const createUser = (email, password) => {
@@ -26,6 +25,9 @@ const Login = () => {
         signInWithGoogle()
     }
 
+    const reset = (email) => {
+        resetPassword(email)
+    }
     return (
         <div className={`${styles.login} mt-5 blurred-background`}>
             <div>
@@ -68,6 +70,10 @@ const Login = () => {
                                     sx={{ width: '100%'}}
                                     onClick={() => createUser(email, password)}>Kayıt ol
                                 </Button> <br /><br />
+                                <Button
+                                    onClick={()=> reset(email)}>
+                                    Şifre sıfırla
+                                </Button>
                             </div>
                         </div>   
                     </Card>
