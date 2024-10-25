@@ -1,16 +1,15 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
 import React, { useContext, useState } from 'react'
-import { useRouter } from 'next/router';
 import { Button, TextField } from "@mui/material";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import styles from "../login/login.module.css"
+
 const Login = () => {
     const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword, resetPassword } = useContext(AuthContext)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const router = useRouter();
 
     const login = (email, password) => {
         signInEmailPassword(email, password)
@@ -18,7 +17,6 @@ const Login = () => {
 
     const createUser = (email, password) => {
         createUserEmailAndPassword(email, password)
-        router.push("/")
     }
 
     const loginWithGoogle = () => {

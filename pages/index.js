@@ -13,8 +13,8 @@ const Home = () => {
     getRandomData()
     // 3 saniye sonra durumu değiştir
     const timer = setTimeout(() => {
-      setShowMessage(true);
-    }, 500);
+      setShowMessage(true)
+    }, 1000)
 
     // Temizlik fonksiyonu
     return () => clearTimeout(timer);
@@ -40,14 +40,17 @@ const Home = () => {
                       <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                          <span className="prdctName">{item.urunAdi}</span>
+                          <>
+                            <h6 className="prdctName pt-4">{item.urunAdi}</h6>
+                            <span className="prdctPrice">{item.fiyat} TL</span>
+                          </>
                         </div>
                       </div>
                     ) : null
                   }
             </div>
           </div> :
-          <p>Lütfen mailinize gelen doğrulama kodunuzu onaylayın.</p> : 
+          null : 
           <div className="container-fluid home">
             <div className="cardRow">
                   {
@@ -55,8 +58,10 @@ const Home = () => {
                       <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                          <span className="prdctName mt-4">{item.urunAdi}</span>
-                          <span className="prdctName">{item.fiyat} TL</span>
+                          <>
+                            <h6 className="prdctName pt-4">{item.urunAdi}</h6>
+                            <span className="prdctPrice">{item.fiyat} TL</span>
+                          </>
                         </div>
                       </div>
                     ) : null

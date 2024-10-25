@@ -9,12 +9,14 @@ const auth = getAuth();
 console.log("auth: ", auth)
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
+    const [userVerified, setUserVerified] = useState(null)
     const router = useRouter();
     
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
               setUser(user)
+              setUserVerified(user.emailVerified)
             }
         });
     }, [])
@@ -82,6 +84,7 @@ const AuthContextProvider = ({ children }) => {
             .then((res) => {
                 const user = res.user;
                 addUser(res.user.uid, res.user.displayName, res.user.email, res.user.emailVerified, res.providerId, res.user.photoURL, res.user.stsTokenManager.accessToken)
+                router.push("/")
                 sendEmailVerification(auth.currentUser)
                     .then(() => {
                         addSQL(email, password)
@@ -92,8 +95,9 @@ const AuthContextProvider = ({ children }) => {
     }
 
     const signInEmailPassword = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password)
-        router.push("/")
+        signInWithEmailAndPassword(auth, email, password).then(() =>
+            router.push("/")
+        )
     }
 
     const resetPassword = (email) => {
@@ -113,7 +117,8 @@ const AuthContextProvider = ({ children }) => {
             createUserEmailAndPassword,
             signInEmailPassword,
             resetPassword,
-            user
+            user,
+            userVerified
         }}>
             { children }
         </AuthContext.Provider>

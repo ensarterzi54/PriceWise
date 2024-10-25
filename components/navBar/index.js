@@ -32,7 +32,7 @@ const NavBar = () => {
         textDecoration: "none",
         color: "inherit"
     }
-    
+
     return (
         <div className={`${styles.nav} pt-3 pb-2`}>
             <div className="mt-2" style={{fontWeight: "bold"}}>
@@ -42,7 +42,7 @@ const NavBar = () => {
                 <TextField 
                     value={value} 
                     onChange={(e) => setValue(e.target.value)} 
-                    sx={{ width: '70ch' }} 
+                    sx={{ width: '60ch' }} 
                     label="Neyi ucuza aramak istersin?" 
                     variant="outlined" 
                     size="small"
@@ -117,7 +117,10 @@ const NavBar = () => {
                                             </MenuList>
                                         </Menu>
                                     </> :
-                                        <div className="pt-3">
+                                        <div>
+                                            <IconButton>
+                                                <Avatar />
+                                            </IconButton>
                                             <Link className="ml-2 mt-2" href="/login">Giriş Yap</Link>
                                         </div> 
                         }
