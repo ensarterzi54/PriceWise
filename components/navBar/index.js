@@ -8,6 +8,7 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LogoutIcon from '@mui/icons-material/Logout';
 import styles from "../navBar/navBar.module.css"
+import Logo from "../logo";
 const NavBar = () => {
     const [value, setValue] = useState("")
     const { signOutWithGoogle, user } = useContext(AuthContext)
@@ -34,9 +35,11 @@ const NavBar = () => {
     }
 
     return (
-        <div className={`${styles.nav} pt-3 pb-2`}>
-            <div className="mt-2" style={{fontWeight: "bold"}}>
-                <Link href="/">PriceWise</Link>
+        <div className={`${styles.nav} pt-3`}>
+            <div className={`${styles.logo} mb-4`}>
+                <Link href="/" style={linkStyle}>
+                    <Logo />
+                </Link>
             </div>
             <div className="mu-input pt-1">
                 <TextField 

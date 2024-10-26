@@ -6,3 +6,8 @@
     padding-right: 200px;
     padding-left: 200px;
 }
+
+.logo {
+    display: flex;
+    justify-content: center;
+}

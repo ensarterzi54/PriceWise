@@ -1,11 +1,24 @@
 .login {
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec, #bcccdc);
     display: flex;
     justify-content: center;
     align-items: center; /* Dikey hizalama */
-    height: 80vh; /* Yüksekliği tam ekran yap */
+    height: 100vh; /* Yüksekliği tam ekran yap */
 }
 
 .inCard {
+    display: flex;
+    justify-content: center;
+}
+
+.forgot {
+    color: #007bff; /* Bağlantı rengi gibi */
+    cursor: pointer; /* Tıklanabilir olduğunu göstermek için */
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.logo {
     display: flex;
     justify-content: center;
 }

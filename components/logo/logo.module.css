@@ -1,0 +1,53 @@
+.logo {
+    display: flex; /* Logo bileşenini esnek bir düzenle hizalar */
+    align-items: center; /* Dikey olarak ortalar */
+    font-family: Arial, sans-serif; /* Yazı tipini belirler */
+}
+
+.tag {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: #34d399; /* Yeşil renk tonu */
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px; /* Tag ve metin arasında boşluk */
+}
+
+.tag::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 15px solid #34d399;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    top: 50%;
+    right: -15px;
+    transform: translateY(-50%);
+}
+
+.circle {
+    background-color: #ffffff; /* Daire rengi */
+    border-radius: 50%; /* Daire yapar */
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Hafif gölge */
+}
+
+.checkmark {
+    color: #34d399; /* Yeşil renk tonu */
+    font-size: 16px; /* Checkmark boyutu */
+}
+
+.text {
+    font-size: 24px; /* Metin boyutu */
+    font-weight: bold; /* Kalın yazı stili */
+    color: #1f2937; /* Koyu gri renk */
+    line-height: 1.5; /* Satır yüksekliği */
+}
