@@ -5,7 +5,7 @@ import { AuthContext } from "@/contexts/AuthContex";
 import { LinearProgress, Skeleton } from "@mui/material";
 
 const Home = () => {
-  const { datas, getRandomData } = useContext(ScrapeContext)
+  const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
   const [showMessage, setShowMessage] = useState(false);
 
@@ -28,16 +28,13 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {
-        console.log("yükllendi")
-      }
       {showMessage ? (
           user ? user.emailVerified ? 
           <div className="container-fluid home">
             <div className="cardRow">
                   {
                     datas ? datas.map((item) => 
-                      <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
+                      <div key={item.id} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                           <>

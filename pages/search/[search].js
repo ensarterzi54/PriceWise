@@ -2,6 +2,7 @@ import { ScrapeContext } from '../../contexts/ScrapeContext'
 import React, { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import styles from "../search/search.module.css"
+import Link from 'next/link';
 const Search = () => {
     const { getData, datas } = useContext(ScrapeContext)
     const router = useRouter();
@@ -28,6 +29,8 @@ const Search = () => {
                                     <span>{item.id}</span>
                                     <span>{item.uniqueKey}</span>
                                     <span className={`${styles.productPrice} ml-2 mr-2`}>{item.fiyat} TL</span>
+                                    <span>Satıcı: { item.sellers[0].saticiAdi }</span>
+                                    <Link href={item.url} target="_blank">Satıcıya git</Link>
                                 </div>
                                 <button className={styles.buyButton}>Add to Cart</button>
                             </div>

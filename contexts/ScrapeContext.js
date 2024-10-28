@@ -4,7 +4,9 @@ export const ScrapeContext = createContext(null)
 
 const ScrapeContextProvider = ({ children }) => {
     const [datas, setDatas] = useState([])
-
+    const [categories, setCategories] = useState([])
+    const [filterProducts, setFilterProducts] = useState([])
+    
     const getData = (value) => {
 
         const postData = async () => {
@@ -59,20 +61,77 @@ const ScrapeContextProvider = ({ children }) => {
     
         getData().then((data) => {
             // alert(data.message);
-            console.log("dataaa: ",data)
+            console.log("dataaa lk: ",data)
             setDatas(data)
         }).catch((error) => {
             // alert(error.message);  // Hata mesajını kullanıcıya göster
         });
     }
 
+    const getCategories = () => {
+        const getCategoriesDatas = async () => {
+            const response = await fetch("http://localhost:8080/api/categories", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",  // JSON formatını belirtiyoruz
+                }
+            });
+            console.log("kategoriler: ",response)
     
+            if (!response.ok) {
+                // Eğer hata durumu varsa fırlat
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An error occurred");
+            }
+    
+            return response.json();
+        };
+    
+        getCategoriesDatas().then((categories) => {
+            // alert(data.message);
+            console.log("kategoriler categories: ", categories)
+            setCategories(categories)
+        }).catch((error) => {
+            // alert(error.message);  // Hata mesajını kullanıcıya göster
+        });
+    }
+
+    const productsByCategory = (id) => {
+        const getProductsByCategory = async () => {
+            const response = await fetch(`http://localhost:8080/api/categories/${id}/products`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An error occurred");
+            }
+    
+            return response.json();
+        };
+    
+        getProductsByCategory().then((categories) => {
+            setFilterProducts(categories)
+            console.log("asdas",filterProducts)
+            console.log("type", typeof filterProducts)
+            console.log("type", filterProducts.length)
+        }).catch((error) => {
+            // alert(error.message);  // Hata mesajını kullanıcıya göster
+        });
+    }
 
     return (
         <ScrapeContext.Provider value={{
             getRandomData,
             getData,
-            datas
+            getCategories,
+            productsByCategory,
+            datas,
+            categories,
+            filterProducts
         }}>
             { children }
         </ScrapeContext.Provider>
