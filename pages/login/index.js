@@ -11,6 +11,7 @@ import Card from '@mui/material/Card';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import ForgotPassword from "../../components/forgotPassword";
 import Logo from "@/components/logo";
+import { useForm } from "react-hook-form";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -44,14 +45,26 @@ const a11yProps = (index) => {
 const Login = () => {
     const [value, setValue] = React.useState(0);
     const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword, resetPassword } = useContext(AuthContext)
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [signInEmail, setSignInEmail] = useState("")
     const [signInPassword, setSignInPassword] = useState("")
     const [forgetPassword, setForgetPassword] = useState(false)
 
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register: registerForm1, handleSubmit: handleSubmitForm1, reset: resetForm1, formState: { errors: errorsForm1 } } = useForm();
+    const { register: registerForm2, handleSubmit: handleSubmitForm2, reset: resetForm2, formState: { errors: errorsForm2 } } = useForm();
+
+    
+    const onSubmitForm1 = (data) => {
+        console.log(data)
+        console.log("onSubmit")
+        signInEmailPassword(data.email, data.password)
+    }
+    const onSubmitForm2 = (data) => {
+        console.log("onSubmitSignIn")
+        createUserEmailAndPassword(data.signInMail, data.signInPassword)
+    }
     const login = (email, password) => {
-        signInEmailPassword(email, password)
+        
     }
 
     const createUser = (email, password) => {
@@ -78,7 +91,10 @@ const Login = () => {
                     <SnackbarProvider maxSnack={3}>
                         <div className={`${styles.login}`}>
                             <div>
-                                <Box sx={{minWidth: 375}}>
+                                <Box sx={{
+                                    minWidth: 375,
+                                    maxWidth: 100
+                                }}>
                                     <Card variant="outlined"
                                         sx={{
                                             backgroundColor: '#f9fafb',
@@ -103,66 +119,123 @@ const Login = () => {
                                                     variant="fullWidth"
                                                     aria-label="full width tabs example"
                                                 >
-                                                    <Tab label="Giriş yap" {...a11yProps(0)} />
-                                                    <Tab label="Kayıt ol" {...a11yProps(1)} />
+                                                    <Tab label="Giriş yap" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
+                                                    <Tab label="Kayıt ol" {...a11yProps(1)} sx={{ textTransform: 'none' }} />
                                                 </Tabs>
                                             </Box>
                                             <CustomTabPanel value={value} index={0}>
-                                                <TextField 
-                                                    id="outlined-basic" 
-                                                    label="E-Posta" 
-                                                    variant="outlined" 
-                                                    sx={{width: '100%'}} 
-                                                    value={email} 
-                                                    onChange={(e) => setEmail(e.target.value)} 
-                                                /> <br /><br />
-                                                <TextField 
-                                                    id="outlined-basic" 
-                                                    label="Şifre" 
-                                                    type="password" 
-                                                    variant="outlined" 
-                                                    sx={{width: '100%'}} 
-                                                    value={password} 
-                                                    onChange={(e) => setPassword(e.target.value)} 
-                                                /> <br />
-                                                <div className="mt-2 mb-1">
-                                                    <span className={styles.forgot} onClick={() => setForgetPassword(true)}>Şifremi unuttum</span>
-                                                </div>
-
-                                                <Button 
-                                                    variant="contained" 
-                                                    sx={{width: '100%', textTransform: "none"}}
-                                                    onClick={() => login(email, password)}>Giriş yap
-                                                </Button> <br /><br />
+                                                <form onSubmit={handleSubmitForm1(onSubmitForm1)}>
+                                                    <TextField 
+                                                        id="outlined-basic" 
+                                                        label="E-Posta" 
+                                                        variant="outlined"
+                                                        error={Boolean(errorsForm1.email)}
+                                                        sx={{
+                                                            width: '100%'
+                                                        }}
+                                                        {...registerForm1("email", { 
+                                                            required: true,
+                                                            pattern: {
+                                                              value: /\S+@\S+\.\S+/,
+                                                              message: "Lütfen geçerli bir E-posta adresi giriniz.",
+                                                            } 
+                                                        })}
+                                                    />
+                                                    {errorsForm1.email && 
+                                                        <p className={`mb-0 pb-0 ${styles.errorMessage}`}>
+                                                            {errorsForm1.email.message || "Lütfen E-posta adresinizi giriniz."}
+                                                        </p>
+                                                    }
+                                                    <TextField 
+                                                        id="outlined-basic" 
+                                                        label="Şifre" 
+                                                        type="password" 
+                                                        variant="outlined"
+                                                        error={Boolean(errorsForm1.password)}
+                                                        sx={{
+                                                            width: '100%',
+                                                            marginTop: '16px'
+                                                        }} 
+                                                        {...registerForm1("password", { 
+                                                            required: true, 
+                                                            minLength: { value: 6, message: "Şifre en az 6 karakter olmalıdır." } 
+                                                        })}
+                                                    />
+                                                    {errorsForm1.password && (
+                                                        <p className={`mb-0 pb-0 ${styles.errorMessage}`}>
+                                                            {errorsForm1.password.message || "Lütfen şifrenizi giriniz."}
+                                                        </p>
+                                                    )}
                                                     
-                                                <button type="button" className="btn btn-outline-primary" style={{ width: "100%" }} onClick={() => loginWithGoogle()}>
+                                                    <div className="mt-2 mb-1">
+                                                        <span className={styles.forgot} onClick={() => setForgetPassword(true)}>Şifremi unuttum</span>
+                                                    </div>
+
+                                                    <Button 
+                                                        type="submit"
+                                                        variant="contained" 
+                                                        sx={{width: '100%', textTransform: "none"}}
+                                                    >Giriş yap
+                                                    </Button> <br /><br />
+                                                        
+                                                </form>
+                                                <button className="btn btn-outline-primary" style={{ width: "100%" }} onClick={() => loginWithGoogle()}>
                                                     <img src="/images/google-logo.png" alt="" style={{ width: "20px" }} />  Google ile giriş yap
                                                 </button><br /><br />
 
                                             </CustomTabPanel>
                                             <CustomTabPanel value={value} index={1}>
-                                                <TextField 
-                                                    id="outlined-basic" 
-                                                    label="E-Posta" 
-                                                    variant="outlined" 
-                                                    sx={{width: '100%'}} 
-                                                    value={signInEmail} 
-                                                    onChange={(e) => setSignInEmail(e.target.value)} 
-                                                /> <br /><br />
-                                                <TextField 
-                                                    id="outlined-basic" 
-                                                    label="Şifre" 
-                                                    type="password" 
-                                                    variant="outlined" 
-                                                    sx={{width: '100%'}} 
-                                                    value={signInPassword} 
-                                                    onChange={(e) => setSignInPassword(e.target.value)} 
-                                                /> <br /> <br />
-                                                <Button 
-                                                    variant="contained" 
-                                                    sx={{ width: '100%', textTransform: "none"}}
-                                                    onClick={() => createUser(signInEmail, signInPassword)}>Kayıt ol
-                                                </Button> <br /><br />
+                                                <form onSubmit={handleSubmitForm2(onSubmitForm2)}>
+                                                    <TextField 
+                                                        id="outlined-basic" 
+                                                        label="E-Posta" 
+                                                        variant="outlined" 
+                                                        error={Boolean(errorsForm2.signInMail)}
+                                                        sx={{width: '100%'}}
+                                                        {...registerForm2("signInMail", { 
+                                                            required: true,
+                                                            pattern: {
+                                                              value: /\S+@\S+\.\S+/,
+                                                              message: "Lütfen geçerli bir E-posta adresi giriniz.",
+                                                            }
+                                                        })}
+                                                    />
+                                                    {errorsForm2.signInMail && 
+                                                        <p className={`mb-0 pb-0 ${styles.errorMessage}`}>
+                                                            {errorsForm2.signInMail.message || "Lütfen E-posta adresinizi giriniz."}
+                                                        </p>
+                                                    }
+                                                    <TextField 
+                                                        id="outlined-basic" 
+                                                        label="Şifre" 
+                                                        type="password" 
+                                                        variant="outlined"
+                                                        error={Boolean(errorsForm2.signInPassword)}
+                                                        sx={{
+                                                            width: '100%',
+                                                            marginTop: '16px'
+                                                        }}
+                                                        {...registerForm2("signInPassword", { 
+                                                            required: true, 
+                                                            minLength: { value: 6, message: "Şifre en az 6 karakter olmalıdır." } 
+                                                        })}
+                                                    />
+                                                    {errorsForm2.signInPassword && (
+                                                        <p className={`mb-0 pb-0 ${styles.errorMessage}`}>
+                                                            {errorsForm2.signInPassword.message || "Lütfen şifrenizi giriniz."}
+                                                        </p>
+                                                    )}
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained" 
+                                                        sx={{ 
+                                                            width: '100%',
+                                                            textTransform: "none",
+                                                            marginTop: '16px'
+                                                        }}
+                                                    >Kayıt ol
+                                                    </Button> <br /><br />
+                                                </form>
                                             </CustomTabPanel>
                                         </Box>
                                     </Card>

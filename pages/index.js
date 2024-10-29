@@ -52,7 +52,7 @@ const Home = () => {
             <div className="cardRow">
                   {
                     datas ? datas.map((item) => 
-                      <div key={item.uniqueKey} className="col-md-3 mt-3 p-0">
+                      <div key={item.id} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                           <>
