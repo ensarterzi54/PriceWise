@@ -38,8 +38,8 @@ const Home = () => {
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                           <>
-                            <h6 className="prdctName pt-4">{item.urunAdi}</h6>
-                            <span className="prdctPrice">{item.fiyat} TL</span>
+                            <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
+                            <span className="prdctPrice">{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
                           </>
                         </div>
                       </div>
@@ -56,7 +56,7 @@ const Home = () => {
                         <div className="homeCard">
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                           <>
-                            <h6 className="prdctName pt-4">{item.urunAdi}</h6>
+                            <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
                             <span className="prdctPrice">{item.fiyat} TL</span>
                           </>
                         </div>

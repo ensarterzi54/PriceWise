@@ -36,7 +36,7 @@ const Category = () => {
                                         {/* <span>Satıcı: { item.sellers[0].saticiAdi }</span> */}
                                         <Link href={item.url} target="_blank">Satıcıya git</Link>
                                     </div>
-                                    <button className={styles.buyButton}>Add to Cart</button>
+                                    {/* <button className={styles.buyButton}>Add to Cart</button> */}
                                 </div>
                             ) : null
                         }

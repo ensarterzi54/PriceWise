@@ -74,15 +74,17 @@ const Layout = ({ children }) => {
                               >
                                 <Box sx={style}>
                                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                                    E-posta adresi deoğrulanmadı.
+                                    E-posta adresi doğrulanmadı.
                                   </Typography>
                                   <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.
                                   </Typography>
                                   <div className="mt-3">
-                                    <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
+                                    <Button>
+                                      <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
+                                    </Button>
                                   </div>
-                                  <div className="mt-3">
+                                  <div>
                                     <Button onClick={()=>signOutWithGoogle()}>Çıkış yap</Button>
                                   </div>
                                 </Box>
