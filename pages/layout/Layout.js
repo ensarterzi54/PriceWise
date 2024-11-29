@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button, LinearProgress } from '@mui/material';
 import Link from 'next/link';
+import { ThemeContext } from '@/contexts/ThemeContext';
 
 const style = {
   position: 'absolute',
@@ -23,26 +24,27 @@ const style = {
 
 const Layout = ({ children }) => {
   const { user, userVerified, signOutWithGoogle } = useContext(AuthContext);
+  const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    console.log("useEffect içinde userVerifide: ", userVerified)
     if (!userVerified) {
       handleOpen() // userVerified false olduğunda modal'ı aç
     }
   }, [userVerified])
   
-
-
   return (
-    <div>
+    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
         {
           user ?
           userVerified == null ?
-            <LinearProgress /> :
+            <div>
+              <LinearProgress />
+            </div>
+            :
             <ScrapeContextProvider>
               {
                 userVerified ? 
@@ -50,7 +52,6 @@ const Layout = ({ children }) => {
                               <NavBar />
                               <main
                                 className={styles.layoutMain}
-                                style={{ backgroundColor: 'rgb(246, 246, 246)' }}
                               >
                                 {children}
                               </main>
@@ -60,7 +61,6 @@ const Layout = ({ children }) => {
                                 <NavBar />
                                 <main
                                   className={styles.layoutMain}
-                                  style={{ backgroundColor: 'rgb(246, 246, 246)' }}
                                 >
                                   {children}
                                 </main>
@@ -95,9 +95,9 @@ const Layout = ({ children }) => {
             </ScrapeContextProvider> : 
             <>
               <NavBar />
+              
               <main
                 className={styles.layoutMain}
-                style={{ backgroundColor: 'rgb(246, 246, 246)' }}
               >
                 {children}
               </main>

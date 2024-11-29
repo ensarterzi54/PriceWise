@@ -21,15 +21,15 @@ const Search = () => {
                 </div>
                 <div className="col-md-9">
                     {
-                        datas ? datas.map((item) => 
-                            <div key={item.uniqueKey} className={`${styles.productCard} mt-3`}>
+                        datas ? datas.map((item, index) => 
+                            <div key={index} className={`${styles.productCard} mt-3`}>
                                 <img src={item.resim_url} className={styles.productImage} alt={item.urunAdi} />
                                 <div className={`${styles.cardInfo} pb-2`}>
                                     <span className={`${styles.productName} pb-2`}>{item.urunAdi}</span>
                                     <span>{item.id}</span>
                                     <span>{item.uniqueKey}</span>
                                     <span className={`${styles.productPrice} ml-2 mr-2`}>{item.fiyat} TL</span>
-                                    <span>Satıcı: { item.sellers[0].saticiAdi }</span>
+                                    <span>Satıcı: { item.sellers[0]?.saticiAdi }</span>
                                     <Link href={item.url} target="_blank">Satıcıya git</Link>
                                 </div>
                                 <button className={styles.buyButton}>Add to Cart</button>

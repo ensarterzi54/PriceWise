@@ -40,7 +40,6 @@ const ScrapeContextProvider = ({ children }) => {
     }
 
     const getRandomData = () => {
-        console.log("çalışşştı")
         const getData = async () => {
             const response = await fetch("http://localhost:8080/api/products/homepage", {
                 method: "GET",
@@ -48,7 +47,6 @@ const ScrapeContextProvider = ({ children }) => {
                     "Content-Type": "application/json",  // JSON formatını belirtiyoruz
                 }
             });
-            console.log(response)
     
             if (!response.ok) {
                 // Eğer hata durumu varsa fırlat
@@ -60,8 +58,6 @@ const ScrapeContextProvider = ({ children }) => {
         };
     
         getData().then((data) => {
-            // alert(data.message);
-            console.log("dataaa lk: ",data)
             setDatas(data)
         }).catch((error) => {
             // alert(error.message);  // Hata mesajını kullanıcıya göster
@@ -76,7 +72,6 @@ const ScrapeContextProvider = ({ children }) => {
                     "Content-Type": "application/json",  // JSON formatını belirtiyoruz
                 }
             });
-            console.log("kategoriler: ",response)
     
             if (!response.ok) {
                 // Eğer hata durumu varsa fırlat
@@ -89,7 +84,6 @@ const ScrapeContextProvider = ({ children }) => {
     
         getCategoriesDatas().then((categories) => {
             // alert(data.message);
-            console.log("kategoriler categories: ", categories)
             setCategories(categories)
         }).catch((error) => {
             // alert(error.message);  // Hata mesajını kullanıcıya göster
@@ -115,9 +109,6 @@ const ScrapeContextProvider = ({ children }) => {
     
         getProductsByCategory().then((categories) => {
             setFilterProducts(categories)
-            console.log("asdas",filterProducts)
-            console.log("type", typeof filterProducts)
-            console.log("type", filterProducts.length)
         }).catch((error) => {
             // alert(error.message);  // Hata mesajını kullanıcıya göster
         });

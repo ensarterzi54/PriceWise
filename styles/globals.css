@@ -94,3 +94,8 @@ a {
   font-weight: bold;
   font-size: 14px;
 }
+
+.favoriteButton {
+  display: flex;
+  justify-content: end;
+}

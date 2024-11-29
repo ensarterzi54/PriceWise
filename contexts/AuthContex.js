@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 
 export const AuthContext = createContext(null)
 const auth = getAuth();
-console.log("auth: ", auth)
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [userVerified, setUserVerified] = useState(null)

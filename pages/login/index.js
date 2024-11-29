@@ -12,6 +12,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 import ForgotPassword from "../../components/forgotPassword";
 import Logo from "@/components/logo";
 import { useForm } from "react-hook-form";
+import { ThemeContext } from "@emotion/react";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -44,7 +45,8 @@ const a11yProps = (index) => {
 
 const Login = () => {
     const [value, setValue] = React.useState(0);
-    const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword, resetPassword } = useContext(AuthContext)
+    const { signInWithGoogle, signInEmailPassword, createUserEmailAndPassword } = useContext(AuthContext)
+    const { systemTheme } = useContext(ThemeContext)
     const [signInEmail, setSignInEmail] = useState("")
     const [signInPassword, setSignInPassword] = useState("")
     const [forgetPassword, setForgetPassword] = useState(false)
@@ -55,8 +57,6 @@ const Login = () => {
 
     
     const onSubmitForm1 = (data) => {
-        console.log(data)
-        console.log("onSubmit")
         signInEmailPassword(data.email, data.password)
     }
     const onSubmitForm2 = (data) => {
@@ -233,6 +233,7 @@ const Login = () => {
                                                             textTransform: "none",
                                                             marginTop: '16px'
                                                         }}
+                                                        style={{ color: systemTheme ? "black" : "red" }}
                                                     >Kayıt ol
                                                     </Button> <br /><br />
                                                 </form>

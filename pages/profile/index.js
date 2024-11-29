@@ -1,11 +1,18 @@
-import React from 'react'
+import { ThemeContext } from '@/contexts/ThemeContext'
+import React, { useContext, useEffect } from 'react'
 
 const Profile = () => {
-    return (
-      <div>
-        Profil sayfası
-      </div>
-    );
+  const { systemTheme, setSystemTheme } = useContext(ThemeContext)
+  useEffect(() => {
+    console.log("erert",systemTheme)
+  }, [systemTheme]);
+  return (
+    <div>
+      {
+        systemTheme ? <p>sdlks</p> : <p>eortı</p>
+      }
+    </div>
+  )
 }
 
 export default Profile
