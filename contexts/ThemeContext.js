@@ -5,7 +5,7 @@ export const ThemeContext = createContext(null)
 const ThemeContextProvider = ({ children }) => {
     const [systemTheme, setSystemTheme] = useState(null);
     useEffect(() => {
-        console.log("systemTheme: ", systemTheme)
+        console.log("systemTheme context içinde: ", systemTheme)
     }, [systemTheme]);
     
     useEffect(() => {
@@ -17,7 +17,7 @@ const ThemeContextProvider = ({ children }) => {
     return (
         <ThemeContext.Provider value={{
             systemTheme,
-            setSystemTheme //bu olmaz mı chat?
+            setSystemTheme
         }}>
             { children }
         </ThemeContext.Provider>

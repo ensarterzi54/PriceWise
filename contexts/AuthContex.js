@@ -32,9 +32,10 @@ const AuthContextProvider = ({ children }) => {
           });
     }
 
-    const addSQL = async  (email, password) => {
+    const addSQL = async  (id, email, password) => {
         const postData = async () => {
             const data = {
+                id,
                 email,
                 password,
             };
@@ -86,7 +87,7 @@ const AuthContextProvider = ({ children }) => {
                 router.push("/")
                 sendEmailVerification(auth.currentUser)
                     .then(() => {
-                        addSQL(email, password)
+                        addSQL(res.user.uid, email, password)
                     });
             }).catch((err) => {
                 console.log(err)
