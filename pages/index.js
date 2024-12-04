@@ -13,20 +13,20 @@ const Home = () => {
   const { user } = useContext(AuthContext)
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const { addFavorite } = useContext(FavoritesContext)
-  const [showMessage, setShowMessage] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   
   useEffect(()=> {
-    console.log("i user",user)
-   
     getRandomData()
-    // 3 saniye sonra durumu değiştir
-    const timer = setTimeout(() => {
-      setShowMessage(true)
-    }, 1000)
+    
+    if(user) {
+      const timer = setTimeout(() => {
+        setShowMessage(true)
+      }, 100)
 
-    // Temizlik fonksiyonu
-    return () => clearTimeout(timer);
+      // Temizlik fonksiyonu
+      return () => clearTimeout(timer);
+    }
   }, [user])
 
   const isFavorite = (productId) => {

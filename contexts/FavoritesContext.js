@@ -39,6 +39,39 @@ const FavoritesContextProvider = ({ children }) => {
         });
     }
 
+    const removeFavorite = (userId, urunId) => {
+        const remove = async () => {
+            console.log("çalıştı")
+            const data = {
+                userId,
+                urunId
+            };
+    
+            const response = await fetch("http://localhost:8080/api/favorites/remove", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                // Eğer hata durumu varsa fırlat
+                const errorData = await response.json();
+                throw new Error(errorData.message || "An error occurred");
+            }
+    
+            return response.json();
+        };
+    
+        remove().then((data) => {
+            console.log("thende")
+            console.log(data)
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
+
     const getFavorite = (userId) => {
         console.log("userId: ", userId)
         const get = async () => {
@@ -74,6 +107,7 @@ const FavoritesContextProvider = ({ children }) => {
     return (
         <FavoritesContext.Provider value={{
             addFavorite,
+            removeFavorite,
             getFavorite,
             favorites
         }}>
