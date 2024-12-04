@@ -26,6 +26,13 @@ const Home = () => {
 
       // Temizlik fonksiyonu
       return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setShowMessage(true)
+      }, 500)
+
+      // Temizlik fonksiyonu
+      return () => clearTimeout(timer);
     }
   }, [user])
 
@@ -48,53 +55,34 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {showMessage ? (
-          user ? user.emailVerified ? 
+      {
+        showMessage ? (
           <div className="container-fluid home">
             <div className="cardRow">
-                  {
-                    datas ? datas.map((item) => 
-                      <div key={item.id} className="col-md-3 mt-3 p-0">
-                        <div className="homeCard">
-                          <div className="favoriteButton" style={{ cursor: 'pointer' }}>
-                              <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
-                          </div>
-                          
-                          <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                            <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
-                            <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
-                        </div>
+              {
+                datas ? datas.map((item) => 
+                  <div key={item.id} className="col-md-3 mt-3 p-0">
+                    <div className="homeCard">
+                      <div className="favoriteButton" style={{ cursor: 'pointer' }}>
+                          <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
                       </div>
-                    ) : null
-                  }
-            </div>
-          </div> :
-          null : 
-          <div className="container-fluid home">
-            <div className="cardRow">
-                  {
-                    datas ? datas.map((item) => 
-                      <div key={item.id} className="col-md-3 mt-3 p-0">
-                        <div className="homeCard">
-                            {isFavorited ? (
-                              <FavoriteIcon onClick={() => isNotFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
-                            ) : (
-                              <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
-                            )}
-                          <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                            <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
-                            <span style={{ color: systemTheme ? "red" : "black" }} className="prdctPrice">{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
-                        </div>
-                      </div>
-                    ) : null
-                  }
+                      
+                      <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
+                        <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
+                        <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
+                    </div>
+                  </div>
+                ) : null
+              }
             </div>
           </div>
-      ) : (
-        <div className="skeleton" style={{ backgroundColor: systemTheme ? "black" : "rgb(246, 246, 246)" }}>
-          <LinearProgress />
-        </div>
-      )}
+        )
+        : (
+          <div className="skeleton" style={{ backgroundColor: systemTheme ? "black" : "rgb(246, 246, 246)" }}>
+            <LinearProgress />
+          </div>
+        )
+      }
     </div>
   );
 }
