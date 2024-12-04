@@ -6,21 +6,19 @@ import { LinearProgress, Skeleton } from "@mui/material";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { FavoritesContext } from "@/contexts/FavoritesContext";
 
 const Home = () => {
   const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
-  const [showMessage, setShowMessage] = useState(false);
+  const { addFavorite } = useContext(FavoritesContext)
+  const [showMessage, setShowMessage] = useState(true);
   const [isFavorited, setIsFavorited] = useState(false);
-
-  useEffect(() => {
-    console.log("Theme changed:", systemTheme);
-  }, [systemTheme]);
-
-  
   
   useEffect(()=> {
+    console.log("i user",user)
+   
     getRandomData()
     // 3 saniye sonra durumu değiştir
     const timer = setTimeout(() => {
@@ -31,9 +29,15 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, [user])
 
-  const toggleFavorite = (id, ad) => {
-    console.log("id: ", id)
-    console.log("ad: ", ad)
+  const isFavorite = (productId) => {
+    console.log("isFavorite")
+    addFavorite(user.uid, productId)
+    setIsFavorited(!isFavorited)
+  };
+
+  const isNotFavorite = (productId) => {
+    addFavorite(user.uid, productId)
+    setIsFavorited(!isFavorited)
   };
 
   return (
@@ -53,16 +57,12 @@ const Home = () => {
                       <div key={item.id} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
                           <div className="favoriteButton" style={{ cursor: 'pointer' }}>
-                            {isFavorited ? (
-                              <FavoriteIcon sx={{ color: 'rgb(53, 212, 153)' }} />
-                            ) : (
-                              <FavoriteBorderIcon onClick={() => toggleFavorite(item.id, item.urunAdi)} sx={{ color: 'rgb(53, 212, 153)' }} />
-                            )}
+                              <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
                           </div>
                           
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                             <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
-                            <span style={{ color: systemTheme ? "red" : "black" }} className="prdctPrice">{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
+                            <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
                         </div>
                       </div>
                     ) : null
@@ -76,7 +76,11 @@ const Home = () => {
                     datas ? datas.map((item) => 
                       <div key={item.id} className="col-md-3 mt-3 p-0">
                         <div className="homeCard">
-                          <FavoriteBorderIcon />
+                            {isFavorited ? (
+                              <FavoriteIcon onClick={() => isNotFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
+                            ) : (
+                              <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
+                            )}
                           <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                             <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
                             <span style={{ color: systemTheme ? "red" : "black" }} className="prdctPrice">{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>

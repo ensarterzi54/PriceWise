@@ -33,6 +33,7 @@ const AuthContextProvider = ({ children }) => {
     }
 
     const addSQL = async  (id, email, password) => {
+        console.log("rrrr:", user)
         const postData = async () => {
             const data = {
                 id,
@@ -58,15 +59,16 @@ const AuthContextProvider = ({ children }) => {
         };
     
         postData().then((data) => {
-            // alert(data.message);
+           console.log("addSql: ", data)
         }).catch((error) => {
-            // alert(error.message);  // Hata mesajını kullanıcıya göster
+            console.log("addSql: ", error)
         });
     }
     const signInWithGoogle = () => {
         signInWithPopup(auth, provider).then((res) => {
             addUser(res.user.uid, res.user.displayName, res.user.email, res.user.emailVerified, res.providerId, res.user.photoURL, res.user.stsTokenManager.accessToken)
             setUser(res.user)
+            addSQL(res.user.uid, email, password)
             router.push("/")
         }).catch((err) => console.log(err))
     }
@@ -87,6 +89,7 @@ const AuthContextProvider = ({ children }) => {
                 router.push("/")
                 sendEmailVerification(auth.currentUser)
                     .then(() => {
+                        console.log("asd: ", res.user.uid, email, password)
                         addSQL(res.user.uid, email, password)
                     });
             }).catch((err) => {

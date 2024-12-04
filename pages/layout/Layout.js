@@ -9,6 +9,7 @@ import Modal from '@mui/material/Modal';
 import { Button, LinearProgress } from '@mui/material';
 import Link from 'next/link';
 import { ThemeContext } from '@/contexts/ThemeContext';
+import { useRouter } from 'next/router';
 
 const style = {
   position: 'absolute',
@@ -23,12 +24,17 @@ const style = {
 }
 
 const Layout = ({ children }) => {
+  const router = useRouter(); 
   const { user, userVerified, signOutWithGoogle } = useContext(AuthContext);
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const hideNavbarRoutes = ['/login'];
+
+  const showNavbar = !hideNavbarRoutes.includes(router.pathname);
 
   useEffect(() => {
     if (!userVerified) {
@@ -49,16 +55,16 @@ const Layout = ({ children }) => {
               {
                 userVerified ? 
                             <>
-                              <NavBar />
-                              <main
-                                className={styles.layoutMain}
-                              >
-                                {children}
-                              </main>
+                                {showNavbar && <NavBar />}
+                                <main
+                                  className={styles.layoutMain}
+                                >
+                                  {children}
+                                </main>
                             </> :
                             <>
                               <div className={open ? styles.blurBackground : ''}> {/* Eğer modal açık ise blur eklenir */}
-                                <NavBar />
+                                {showNavbar && <NavBar />}
                                 <main
                                   className={styles.layoutMain}
                                 >
@@ -94,7 +100,7 @@ const Layout = ({ children }) => {
               
             </ScrapeContextProvider> : 
             <>
-              <NavBar />
+              {showNavbar && <NavBar />}
               
               <main
                 className={styles.layoutMain}
