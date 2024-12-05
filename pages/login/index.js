@@ -57,6 +57,7 @@ const Login = () => {
 
     
     const onSubmitForm1 = (data) => {
+        console.log("dfgkdjgkenroıgenrj")
         signInEmailPassword(data.email, data.password)
     }
     const onSubmitForm2 = (data) => {

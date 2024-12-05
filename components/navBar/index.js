@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
 import React, { useContext, useEffect, useState } from 'react'
-import { Avatar, Button, IconButton, InputAdornment, Menu, MenuItem, MenuList, TextField } from "@mui/material"
+import { Avatar, Box, Button, IconButton, InputAdornment, Menu, MenuItem, MenuList, TextField } from "@mui/material"
 import { useRouter } from 'next/router';
 import SearchIcon from '@mui/icons-material/Search';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -16,6 +16,43 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import { ThemeContext } from '@/contexts/ThemeContext';
+import Badge from '@mui/material/Badge';
+import Stack from '@mui/material/Stack';
+import CheckIcon from '@mui/icons-material/Check';
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+      backgroundColor: 'rgb(53, 212, 153)',
+      color: 'rgb(245, 245, 245)',
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: 'ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""',
+      },
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1,
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0,
+      },
+    },
+  }));
+
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+width: 22,
+height: 22,
+border: `2px solid ${theme.palette.background.paper}`,
+}));
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -179,9 +216,34 @@ const NavBar = () => {
                             {
                                 user ?  <>
                                             <IconButton
-                                                onMouseEnter={handleMenuOpen} // Avatar üzerine gelince menüyü aç
-                                                >
-                                                <Avatar src={ user && user.photoURL } />
+                                                onMouseEnter={handleMenuOpen}
+                                            >
+                                                {
+                                                    user.emailVerified ?
+                                                        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                                                            <Avatar src={user && user.photoURL} />
+                                                            {user && (
+                                                                <Box
+                                                                    sx={{
+                                                                        position: 'absolute',
+                                                                        bottom: 0,
+                                                                        right: 0,
+                                                                        width: 15,
+                                                                        height: 15,
+                                                                        backgroundColor: 'rgb(53, 212, 153)',
+                                                                        borderRadius: '50%',
+                                                                        display: 'flex',
+                                                                        justifyContent: 'center',
+                                                                        alignItems: 'center',
+                                                                        border: '2px solid white',
+                                                                    }}
+                                                                >
+                                                                    <CheckIcon sx={{ fontSize: 14, color: 'white' }} />
+                                                                </Box>
+                                                            )}
+                                                    </Box> :
+                                                    <Avatar src={user && user.photoURL} />
+                                                }
                                             </IconButton>
                                             <span style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
                                                 { user ? user.email : null }

@@ -2,12 +2,25 @@ import Head from "next/head";
 import { ScrapeContext } from "../contexts/ScrapeContext"
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContex";
-import { LinearProgress, Skeleton } from "@mui/material";
+import { Box, Button, IconButton, LinearProgress, Modal, Skeleton, Typography } from "@mui/material";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FavoritesContext } from "@/contexts/FavoritesContext";
+import CloseIcon from '@mui/icons-material/Close';
+import Link from "next/link";
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+}
 const Home = () => {
   const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
@@ -15,7 +28,12 @@ const Home = () => {
   const { addFavorite } = useContext(FavoritesContext)
   const [showMessage, setShowMessage] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
-  
+  const [open, setOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   useEffect(()=> {
     getRandomData()
     
@@ -38,8 +56,12 @@ const Home = () => {
 
   const isFavorite = (productId) => {
     console.log("isFavorite")
-    addFavorite(user.uid, productId)
-    setIsFavorited(!isFavorited)
+    if(user.emailVerified) {
+      addFavorite(user.uid, productId)
+      setIsFavorited(!isFavorited)
+    } else {
+      handleOpen()
+    }
   };
 
   const isNotFavorite = (productId) => {
@@ -83,6 +105,37 @@ const Home = () => {
           </div>
         )
       }
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        BackdropProps={{ onClick: (event) => event.stopPropagation() }}
+        disableScrollLock={true}
+      >
+        <Box sx={style}>
+          <IconButton
+            onClick={handleClose}
+            sx={{ position: 'absolute', top: 8, right: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            E-posta adresi doğrulanmadı.
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.
+          </Typography>
+          <div className="mt-3">
+            <Button>
+              <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
+            </Button>
+          </div>
+          <div>
+            <Button onClick={()=>signOutWithGoogle()}>Çıkış yap</Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }

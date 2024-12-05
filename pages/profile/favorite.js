@@ -28,6 +28,7 @@ const Favorite = () => {
     const [selectedProduct, setSelectedProduct] = useState(null)
     
     const handleOpen = (product) => {
+        console.log("ç")
         setSelectedProduct(product)
         setOpen(true)
     };
@@ -74,7 +75,7 @@ const Favorite = () => {
             </div>
 
             {/* Modal for confirmation */}
-            <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+            <Modal disableScrollLock open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         {selectedProduct ? `${selectedProduct.urunAdi} favorilerimden çıkarılsın mı?` : ''}

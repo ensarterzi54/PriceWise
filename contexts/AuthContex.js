@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { provider, database } from "../firebase/firebaseConfig"
-import { ref, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import { useRouter } from 'next/router';
 
 export const AuthContext = createContext(null)
@@ -9,6 +9,8 @@ const auth = getAuth();
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [userVerified, setUserVerified] = useState(null)
+    const [count, setCount] = useState(null)
+
     const router = useRouter();
     
     useEffect(() => {
@@ -30,6 +32,22 @@ const AuthContextProvider = ({ children }) => {
             photoURL,
             accessToken
           });
+    }
+
+    const loginCount = async (uid, count) => {
+        let val = 0
+        const starCountRef = ref(database, `loginCount/${uid}`);
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("..: ", data?.count)
+            val = data?.count + 1
+        })
+        
+        set(ref(database, `loginCount/${uid}`), {
+            count: val
+        }).then(() => {
+            setCount(val)
+        })
     }
 
     const addSQL = async  (id, email, password) => {
@@ -98,8 +116,11 @@ const AuthContextProvider = ({ children }) => {
     }
 
     const signInEmailPassword = (email, password) => {
-        signInWithEmailAndPassword(auth, email, password).then(() =>
-            router.push("/")
+        signInWithEmailAndPassword(auth, email, password).then((res) => {
+            console.log("res: ", res)
+                router.push("/")
+                loginCount(res.user.uid, 1)
+            }
         )
     }
 
@@ -120,6 +141,7 @@ const AuthContextProvider = ({ children }) => {
             createUserEmailAndPassword,
             signInEmailPassword,
             resetPassword,
+            count,
             user,
             userVerified
         }}>

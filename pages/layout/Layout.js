@@ -6,10 +6,11 @@ import { AuthContext } from '@/contexts/AuthContex';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Button, LinearProgress } from '@mui/material';
+import { Button, IconButton, LinearProgress } from '@mui/material';
 import Link from 'next/link';
 import { ThemeContext } from '@/contexts/ThemeContext';
 import { useRouter } from 'next/router';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
   position: 'absolute',
@@ -25,7 +26,7 @@ const style = {
 
 const Layout = ({ children }) => {
   const router = useRouter(); 
-  const { user, userVerified, signOutWithGoogle } = useContext(AuthContext);
+  const { user, userVerified, signOutWithGoogle, count } = useContext(AuthContext);
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const [open, setOpen] = useState(false);
 
@@ -37,10 +38,11 @@ const Layout = ({ children }) => {
   const showNavbar = !hideNavbarRoutes.includes(router.pathname);
 
   useEffect(() => {
+    console.log("count: ", count)
     if (!userVerified) {
       handleOpen() // userVerified false olduğunda modal'ı aç
     }
-  }, [userVerified])
+  }, [userVerified, count])
   
   return (
     <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
@@ -79,6 +81,12 @@ const Layout = ({ children }) => {
                                 BackdropProps={{ onClick: (event) => event.stopPropagation() }}
                               >
                                 <Box sx={style}>
+                                <IconButton
+                                  onClick={handleClose}
+                                  sx={{ position: 'absolute', top: 8, right: 8 }}
+                                >
+                                  <CloseIcon />
+                                </IconButton>
                                   <Typography id="modal-modal-title" variant="h6" component="h2">
                                     E-posta adresi doğrulanmadı.
                                   </Typography>
@@ -91,7 +99,7 @@ const Layout = ({ children }) => {
                                     </Button>
                                   </div>
                                   <div>
-                                    <Button onClick={()=>signOutWithGoogle()}>Çıkış yap</Button>
+                                    <Button onClick={()=> signOutWithGoogle()}>Çıkış yap</Button>
                                   </div>
                                 </Box>
                               </Modal>
