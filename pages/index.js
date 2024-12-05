@@ -25,7 +25,7 @@ const Home = () => {
   const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
-  const { addFavorite } = useContext(FavoritesContext)
+  const { addFavorite, favorites, getFavorite } = useContext(FavoritesContext)
   const [showMessage, setShowMessage] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [open, setOpen] = useState(false);
@@ -56,12 +56,17 @@ const Home = () => {
 
   const isFavorite = (productId) => {
     console.log("isFavorite")
-    if(user.emailVerified) {
-      addFavorite(user.uid, productId)
-      setIsFavorited(!isFavorited)
+    if(user) {
+      if(user.emailVerified) {
+        addFavorite(user.uid, productId)
+        setIsFavorited(!isFavorited)
+      } else {
+        handleOpen()
+      }
     } else {
       handleOpen()
     }
+    
   };
 
   const isNotFavorite = (productId) => {
