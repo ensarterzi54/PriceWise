@@ -4,14 +4,19 @@ export const ThemeContext = createContext(null)
 
 const ThemeContextProvider = ({ children }) => {
     const [systemTheme, setSystemTheme] = useState(null);
-    useEffect(() => {
-        console.log("systemTheme context içinde: ", systemTheme)
-    }, [systemTheme]);
     
     useEffect(() => {
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-        setSystemTheme(isDarkMode)
-        console.log("c systemTheme: ", systemTheme)
+
+        if(localStorage.getItem("theme")) {
+            let check = localStorage.getItem("theme")
+            let mode = check === "true";
+            setSystemTheme(mode)
+        } else {
+            setSystemTheme(isDarkMode)
+            localStorage.setItem("theme", isDarkMode)
+        }
+
     }, []);
 
     return (

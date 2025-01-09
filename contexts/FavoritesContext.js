@@ -6,7 +6,6 @@ const FavoritesContextProvider = ({ children }) => {
     const [favorites, setFavorites] = useState([])
 
     const addFavorite = (userId,urunId) => {
-        console.log("userId: ", userId, "urunId: ", urunId )
         const add = async () => {
             console.log("çalıştı")
             const data = {
@@ -41,7 +40,7 @@ const FavoritesContextProvider = ({ children }) => {
 
     const removeFavorite = (userId, urunId) => {
         const remove = async () => {
-            console.log("çalıştı")
+            console.log("remmove çalıştı")
             const data = {
                 userId,
                 urunId
@@ -57,23 +56,27 @@ const FavoritesContextProvider = ({ children }) => {
 
             if (!response.ok) {
                 // Eğer hata durumu varsa fırlat
+                console.log("remove if içi")
                 const errorData = await response.json();
                 throw new Error(errorData.message || "An error occurred");
             }
-    
+            console.log("remove son satır")
             return response.json();
         };
     
         remove().then((data) => {
-            console.log("thende")
+            console.log("remove thende")
             console.log(data)
+            getFavorite(userId)
+            console.log("remove then son satır")
         }).catch((error) => {
+            console.log("remove catch")
             console.log(error)
+            console.log("remove catch son satır")
         });
     }
 
     const getFavorite = (userId) => {
-        console.log("userId: ", userId)
         const get = async () => {
             const data = {
                 userId
@@ -97,8 +100,7 @@ const FavoritesContextProvider = ({ children }) => {
         };
     
         get().then((data) => {
-            console.log("thende")
-            console.log("favorileri listele ",data)
+            console.log("getFavorite then")
             setFavorites(data)
         }).catch((error) => {
             console.log(error)

@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FavoritesContext } from "@/contexts/FavoritesContext";
 import CloseIcon from '@mui/icons-material/Close';
 import Link from "next/link";
+import { moneyFormat } from "../functions"
 
 const style = {
   position: 'absolute',
@@ -35,7 +36,9 @@ const Home = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(()=> {
-    getRandomData()
+    if(user) {
+      getRandomData()
+    }
     
     if(user) {
       const timer = setTimeout(() => {
@@ -85,7 +88,7 @@ const Home = () => {
       {
         showMessage ? (
           <div className="container-fluid home">
-            <div className="cardRow">
+            <div className="cardRow justify-content-between">
               {
                 datas ? datas.map((item) => 
                   <div key={item.id} className="col-md-3 mt-3 p-0">
@@ -95,8 +98,14 @@ const Home = () => {
                       </div>
                       
                       <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                        <h6 className="prdctName pt-4">{item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + "..." : item.urunAdi}</h6>
-                        <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>{item.fiyat} TL</span> <span>{item.sellers?.[0]?.saticiAdi}</span>
+                        <h6 className="prdctName pt-4">{ item.urunAdi.length > 20 ? item.urunAdi.substring(0, 20) + "..." : item.urunAdi }</h6>
+                        
+                        <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>
+                          { moneyFormat(item.fiyat) } TL
+                        </span> 
+                        <span> 
+                          { item.sellers?.[0]?.saticiAdi }
+                        </span>
                     </div>
                   </div>
                 ) : null

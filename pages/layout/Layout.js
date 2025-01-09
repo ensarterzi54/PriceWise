@@ -6,7 +6,7 @@ import { AuthContext } from '@/contexts/AuthContex';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Button, IconButton, LinearProgress } from '@mui/material';
+import { Backdrop, Button, CircularProgress, IconButton, LinearProgress } from '@mui/material';
 import Link from 'next/link';
 import { ThemeContext } from '@/contexts/ThemeContext';
 import { useRouter } from 'next/router';
@@ -29,6 +29,8 @@ const Layout = ({ children }) => {
   const { user, userVerified, signOutWithGoogle, count } = useContext(AuthContext);
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const [open, setOpen] = useState(false);
+  const [focus, setFocus] = useState(false)
+  const [avatarFocus, setAvatarFocus] = useState(false)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -38,14 +40,13 @@ const Layout = ({ children }) => {
   const showNavbar = !hideNavbarRoutes.includes(router.pathname);
 
   useEffect(() => {
-    console.log("count: ", count)
     if (!userVerified) {
       handleOpen() // userVerified false olduğunda modal'ı aç
     }
   }, [userVerified, count])
   
   return (
-    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
+    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }} >
         {
           user ?
           userVerified == null ?
@@ -57,10 +58,19 @@ const Layout = ({ children }) => {
               {
                 userVerified ? 
                             <>
-                                {showNavbar && <NavBar />}
+                                {showNavbar && <NavBar focus={focus} avatarFocus={avatarFocus} setFocus={setFocus} setAvatarFocus={setAvatarFocus} />}
                                 <main
-                                  className={styles.layoutMain}
+                                  className={`${styles.layoutMain} ${(focus || avatarFocus) ? styles.blur : ""}`}
                                 >
+                                  {
+                                    (focus || avatarFocus) && 
+                                      <Backdrop
+                                        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                                        open={open}
+                                        onClick={handleClose}
+                                      >
+                                      </Backdrop>
+                                  }
                                   {children}
                                 </main>
                             </> :
@@ -70,6 +80,15 @@ const Layout = ({ children }) => {
                                 <main
                                   className={styles.layoutMain}
                                 >
+                                  {
+                                    focus && 
+                                      <Backdrop
+                                        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                                        open={open}
+                                        onClick={handleClose}
+                                      >
+                                      </Backdrop>
+                                  }
                                   {children}
                                 </main>
                               </div>
@@ -109,7 +128,15 @@ const Layout = ({ children }) => {
             </ScrapeContextProvider> : 
             <>
               {showNavbar && <NavBar />}
-              
+              {
+                focus && 
+                  <Backdrop
+                    sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                    open={open}
+                    onClick={handleClose}
+                  >
+                  </Backdrop>
+              }
               <main
                 className={styles.layoutMain}
               >

@@ -19,23 +19,21 @@ const ScrapeContextProvider = ({ children }) => {
                     "keyword": value
                 }),  // Veriyi JSON formatına çeviriyoruz
             });
-            console.log(response)
     
             if (!response.ok) {
                 // Eğer hata durumu varsa fırlat
                 const errorData = await response.json();
                 throw new Error(errorData.message || "An error occurred");
             }
-    
+
             return response.json();
         };
     
         postData().then((data) => {
-            // alert(data.message);
             console.log("dataaa: ",data)
             setDatas(data)
         }).catch((error) => {
-            // alert(error.message);  // Hata mesajını kullanıcıya göster
+            console.log("error: ",error)
         });
     }
 
@@ -59,8 +57,9 @@ const ScrapeContextProvider = ({ children }) => {
     
         getData().then((data) => {
             setDatas(data)
+            console.log("datas: ",data)
         }).catch((error) => {
-            // alert(error.message);  // Hata mesajını kullanıcıya göster
+            console.log("error: ",error)
         });
     }
 
@@ -83,10 +82,9 @@ const ScrapeContextProvider = ({ children }) => {
         };
     
         getCategoriesDatas().then((categories) => {
-            // alert(data.message);
             setCategories(categories)
         }).catch((error) => {
-            // alert(error.message);  // Hata mesajını kullanıcıya göster
+            console.log("error: ",error)
         });
     }
 

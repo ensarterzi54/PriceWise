@@ -28,7 +28,7 @@ const Favorite = () => {
     const [selectedProduct, setSelectedProduct] = useState(null)
     
     const handleOpen = (product) => {
-        console.log("ç")
+        console.log("handleOpen' a parametre gelen ürün: ", product)
         setSelectedProduct(product)
         setOpen(true)
     };
@@ -42,8 +42,10 @@ const Favorite = () => {
     const handleConfirm = (id) => {
         if (selectedProduct) {
             removeFavorite(user.uid, selectedProduct.id);
+            console.log("Favori silindi")
             setSelectedProduct(null)
             handleClose();
+            getFavorite(user?.uid);
         }
     };
 

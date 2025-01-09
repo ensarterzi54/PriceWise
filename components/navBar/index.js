@@ -100,7 +100,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       borderRadius: 20 / 2,
     },
 }));
-const NavBar = () => {
+const NavBar = ({ setFocus, setAvatarFocus }) => {
     const [value, setValue] = useState("")
     const { getCategories, categories } = useContext(ScrapeContext)
     const { signOutWithGoogle, user } = useContext(AuthContext)
@@ -109,6 +109,14 @@ const NavBar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [anchorElCategories, setAnchorElCategories] = useState(null);
+
+    const handleFocus = () => {
+        setFocus(true)
+    };
+    
+    const handleBlur = () => {
+        setFocus(false)
+    };
 
     const handleMenuOpenCategories = (event) => {
         setAnchorElCategories(event.currentTarget);
@@ -119,11 +127,14 @@ const NavBar = () => {
     };
 
     const handleMenuOpen = (event) => {
-      setAnchorEl(event.currentTarget);
+        setAvatarFocus(true)
+        
+        setAnchorEl(event.currentTarget);
     };
   
     const handleMenuClose = () => {
-      setAnchorEl(null);
+        setAvatarFocus(false)
+        setAnchorEl(null);
     };
   
     const isMenuOpen = Boolean(anchorEl);
@@ -138,7 +149,7 @@ const NavBar = () => {
     }
 
     const switchClick = (event) => {
-        console.log("event", event)
+        localStorage.setItem("theme", event.target.checked);
         setSystemTheme(event.target.checked)
     }
 
@@ -154,7 +165,7 @@ const NavBar = () => {
                         <Logo />
                     </Link>
 
-                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-0 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
+                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '18px' }}>
                         Kategoriler
                     </Button>
 
@@ -194,6 +205,8 @@ const NavBar = () => {
                     <TextField 
                         value={value} 
                         onChange={(e) => setValue(e.target.value)} 
+                        onFocus={handleFocus} // Odaklanma olayı
+                        onBlur={handleBlur}
                         sx={{ width: '60ch' }} 
                         label="Neyi ucuza aramak istersin?" 
                         variant="outlined" 
@@ -301,7 +314,7 @@ const NavBar = () => {
                                                     style={{ margin: "0px", padding:"0px"}}
                                                     checked={systemTheme}
                                                     control = {
-                                                        <MaterialUISwitch onClick={(event) => setSystemTheme(event.target.checked)} />
+                                                        <MaterialUISwitch onClick={(event) => switchClick(event)} />
                                                     }
                                                 />
                                             </FormGroup>

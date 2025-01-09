@@ -13,13 +13,9 @@ const Profile = () => {
     setActiveTab(tabId); // Tıklanan tab'ı aktif olarak ayarla
   };
 
-  useEffect(() => {
-    console.log("erert",systemTheme)
-  }, [systemTheme]);
-
   return (
     <div className="container profile">
-      <div className="row mt-5">
+      <div className="row pt-5">
         <div className="col-3">
           <div className={`nav flex-column nav-pills border pl-3 ${styles.sideBar}`} id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <span 
