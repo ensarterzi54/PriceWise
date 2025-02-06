@@ -100,7 +100,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       borderRadius: 20 / 2,
     },
 }));
-const NavBar = ({ setFocus, setAvatarFocus }) => {
+const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
     const [value, setValue] = useState("")
     const { getCategories, categories } = useContext(ScrapeContext)
     const { signOutWithGoogle, user } = useContext(AuthContext)
@@ -111,11 +111,14 @@ const NavBar = ({ setFocus, setAvatarFocus }) => {
     const [anchorElCategories, setAnchorElCategories] = useState(null);
 
     const handleFocus = () => {
+        console.log("handleFocus")
         setFocus(true)
+        setBackdropOpen(true)
     };
     
     const handleBlur = () => {
         setFocus(false)
+        setBackdropOpen(false)
     };
 
     const handleMenuOpenCategories = (event) => {
@@ -128,13 +131,14 @@ const NavBar = ({ setFocus, setAvatarFocus }) => {
 
     const handleMenuOpen = (event) => {
         setAvatarFocus(true)
-        
         setAnchorEl(event.currentTarget);
+        setBackdropOpen(true)
     };
   
     const handleMenuClose = () => {
         setAvatarFocus(false)
         setAnchorEl(null);
+        setBackdropOpen(false)
     };
   
     const isMenuOpen = Boolean(anchorEl);
@@ -292,7 +296,7 @@ const NavBar = ({ setFocus, setAvatarFocus }) => {
                                                         }
                                                     }}
                                                 >
-                                                    <Link href="/profile" style={linkStyle}>
+                                                    <Link href="/profile/favorite" style={linkStyle}>
                                                         <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}>
                                                             <PermIdentityIcon />Profil
                                                         </MenuItem>

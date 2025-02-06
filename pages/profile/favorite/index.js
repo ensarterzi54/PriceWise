@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { useRouter } from 'next/router';
 
 const style = {
     position: 'absolute',
@@ -26,7 +27,8 @@ const Favorite = () => {
     const { getFavorite, removeFavorite, favorites } = useContext(FavoritesContext);
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null)
-    
+    const router = useRouter();
+
     const handleOpen = (product) => {
         console.log("handleOpen' a parametre gelen ürün: ", product)
         setSelectedProduct(product)
@@ -34,10 +36,11 @@ const Favorite = () => {
     };
 
     const handleClose = () => setOpen(false);
-
+    
     useEffect(() => {
+        console.log("selectedProduct favourite içinde : ", selectedProduct)
         getFavorite(user?.uid);
-    }, [selectedProduct]);
+    }, [selectedProduct, user]);
 
     const handleConfirm = (id) => {
         if (selectedProduct) {
@@ -50,7 +53,7 @@ const Favorite = () => {
     };
 
     return (
-        <div>
+        <div className="container">
             <div className="cardRow">
                 {favorites &&
                     favorites.map((item) => (
@@ -97,3 +100,8 @@ const Favorite = () => {
 };
 
 export default Favorite;
+
+Favorite.getLayout = function getLayout(page) {
+    const ProfileLayout = require('../layout').default; // Layout'u dinamik olarak çağırıyoruz
+    return <ProfileLayout>{page}</ProfileLayout>;
+}

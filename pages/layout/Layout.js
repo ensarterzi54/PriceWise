@@ -29,6 +29,7 @@ const Layout = ({ children }) => {
   const { user, userVerified, signOutWithGoogle, count } = useContext(AuthContext);
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
   const [open, setOpen] = useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const [focus, setFocus] = useState(false)
   const [avatarFocus, setAvatarFocus] = useState(false)
 
@@ -40,7 +41,9 @@ const Layout = ({ children }) => {
   const showNavbar = !hideNavbarRoutes.includes(router.pathname);
 
   useEffect(() => {
-    if (!userVerified) {
+    console.log("userVerified: ", userVerified) 
+    if (user && !userVerified) {
+      console.log("userVerified ifdee: ", userVerified)
       handleOpen() // userVerified false olduğunda modal'ı aç
     }
   }, [userVerified, count])
@@ -48,101 +51,69 @@ const Layout = ({ children }) => {
   return (
     <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }} >
         {
-          user ?
-          userVerified == null ?
-            <div>
-              <LinearProgress />
-            </div>
+          (user && userVerified == null) ?
+              <div>
+                <LinearProgress />
+              </div>
             :
-            <ScrapeContextProvider>
-              {
-                userVerified ? 
-                            <>
-                                {showNavbar && <NavBar focus={focus} avatarFocus={avatarFocus} setFocus={setFocus} setAvatarFocus={setAvatarFocus} />}
-                                <main
-                                  className={`${styles.layoutMain} ${(focus || avatarFocus) ? styles.blur : ""}`}
-                                >
-                                  {
-                                    (focus || avatarFocus) && 
-                                      <Backdrop
-                                        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
-                                        open={open}
-                                        onClick={handleClose}
-                                      >
-                                      </Backdrop>
-                                  }
-                                  {children}
-                                </main>
-                            </> :
-                            <>
-                              <div className={open ? styles.blurBackground : ''}> {/* Eğer modal açık ise blur eklenir */}
-                                {showNavbar && <NavBar />}
-                                <main
-                                  className={styles.layoutMain}
-                                >
-                                  {
-                                    focus && 
-                                      <Backdrop
-                                        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
-                                        open={open}
-                                        onClick={handleClose}
-                                      >
-                                      </Backdrop>
-                                  }
-                                  {children}
-                                </main>
-                              </div>
-                              <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                                BackdropProps={{ onClick: (event) => event.stopPropagation() }}
-                              >
-                                <Box sx={style}>
-                                <IconButton
-                                  onClick={handleClose}
-                                  sx={{ position: 'absolute', top: 8, right: 8 }}
-                                >
-                                  <CloseIcon />
-                                </IconButton>
-                                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                                    E-posta adresi doğrulanmadı.
-                                  </Typography>
-                                  <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.
-                                  </Typography>
-                                  <div className="mt-3">
-                                    <Button>
-                                      <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
-                                    </Button>
-                                  </div>
-                                  <div>
-                                    <Button onClick={()=> signOutWithGoogle()}>Çıkış yap</Button>
-                                  </div>
-                                </Box>
-                              </Modal>
-                            </>
-              }
-              
-            </ScrapeContextProvider> : 
-            <>
-              {showNavbar && <NavBar />}
-              {
-                focus && 
-                  <Backdrop
-                    sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
-                    open={open}
-                    onClick={handleClose}
+              <>
+                <div>
+                  {showNavbar && <NavBar focus={focus} avatarFocus={avatarFocus} setFocus={setFocus} setAvatarFocus={setAvatarFocus} setBackdropOpen={setBackdropOpen} />}
+                  
+                  <main
+                    className={`${styles.layoutMain} ${(focus || avatarFocus) ? styles.blur : ""}`}
                   >
-                  </Backdrop>
-              }
-              <main
-                className={styles.layoutMain}
-              >
-                {children}
-              </main>
-            </>
+                    {
+                      (focus || avatarFocus) && 
+                        <>
+                          <Backdrop
+                            sx={{
+                              bgcolor: 'rgba(0, 0, 0, 0.5)', // Arka plan rengi
+                              zIndex: 2000,                  // Yüksek bir z-index değeri
+                            }}
+                            open={backdropOpen}
+                            onClick={handleClose}
+                          >
+                          </Backdrop>
+                        </>
+                    }
+                    
+                    {children}
+                  </main>
+                </div> 
+
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  BackdropProps={{ onClick: (event) => event.stopPropagation() }}
+                  disableScrollLock={true}
+                >
+                  <Box sx={style}>
+                  <IconButton
+                    onClick={handleClose}
+                    sx={{ position: 'absolute', top: 8, right: 8 }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                      E-posta adresi doğrulanmadı.
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.
+                    </Typography>
+                    <div className="mt-3">
+                      <Button>
+                        <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
+                      </Button>
+                    </div>
+                    <div>
+                      <Button onClick={()=> signOutWithGoogle()}>Çıkış yap</Button>
+                    </div>
+                  </Box>
+                </Modal>
+              </>
         }
       
     </div>

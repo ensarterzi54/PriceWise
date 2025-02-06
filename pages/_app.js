@@ -7,6 +7,7 @@ import ThemeContextProvider from "@/contexts/ThemeContext";
 import FavoritesContextProvider from "@/contexts/FavoritesContext";
 
 export default function App({ Component, pageProps }) {
+  const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <ThemeContextProvider>
       <AuthContextProvider>
@@ -14,7 +15,7 @@ export default function App({ Component, pageProps }) {
           <FavoritesContextProvider>
             <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
               <Layout>
-                <Component {...pageProps} />
+                {getLayout(<Component {...pageProps} />)}
               </Layout>
             </SnackbarProvider>
           </FavoritesContextProvider>

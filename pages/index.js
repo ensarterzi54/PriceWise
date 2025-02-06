@@ -22,6 +22,8 @@ const style = {
   boxShadow: 24,
   p: 4,
 }
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const Home = () => {
   const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
@@ -36,9 +38,8 @@ const Home = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(()=> {
-    if(user) {
-      getRandomData()
-    }
+    getRandomData()
+    getFavorite(user?.uid)
     
     if(user) {
       const timer = setTimeout(() => {
@@ -63,6 +64,7 @@ const Home = () => {
       if(user.emailVerified) {
         addFavorite(user.uid, productId)
         setIsFavorited(!isFavorited)
+        getFavorite(user?.uid)
       } else {
         handleOpen()
       }
@@ -88,13 +90,24 @@ const Home = () => {
       {
         showMessage ? (
           <div className="container-fluid home">
-            <div className="cardRow justify-content-between">
+            <div className="cardRow">
               {
                 datas ? datas.map((item) => 
                   <div key={item.id} className="col-md-3 mt-3 p-0">
                     <div className="homeCard">
                       <div className="favoriteButton" style={{ cursor: 'pointer' }}>
-                          <FavoriteBorderIcon onClick={() => isFavorite(item.id)} sx={{ color: 'rgb(53, 212, 153)' }} />
+                        <span>
+                          <FavoriteBorderIcon
+                            onClick={() => isFavorite(item.id)}
+                            sx={{
+                              color: 'rgb(53, 212, 153)',
+                              '&:hover': {
+                                transition: 'color 0.3s',
+                                color: 'rgb(33, 150, 83)'
+                              }
+                            }}
+                          />
+                        </span>
                       </div>
                       
                       <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
@@ -102,7 +115,7 @@ const Home = () => {
                         
                         <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>
                           { moneyFormat(item.fiyat) } TL
-                        </span> 
+                        </span>
                         <span> 
                           { item.sellers?.[0]?.saticiAdi }
                         </span>
