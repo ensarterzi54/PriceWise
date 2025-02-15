@@ -28,42 +28,26 @@ const Home = () => {
   const { datas, getRandomData, productsByCategory } = useContext(ScrapeContext)
   const { user } = useContext(AuthContext)
   const { systemTheme, setSystemTheme } = useContext(ThemeContext)
-  const { addFavorite, favorites, getFavorite } = useContext(FavoritesContext)
+  const { addFavorite, getFavorite, favorites, setFavorites } = useContext(FavoritesContext)
   const [showMessage, setShowMessage] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  useEffect(()=> {
+  useEffect(() => {
     getRandomData()
+  }, []);
+
+  useEffect(()=> {
     getFavorite(user?.uid)
-    
-    if(user) {
-      const timer = setTimeout(() => {
-        setShowMessage(true)
-      }, 100)
-
-      // Temizlik fonksiyonu
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setShowMessage(true)
-      }, 500)
-
-      // Temizlik fonksiyonu
-      return () => clearTimeout(timer);
-    }
   }, [user])
 
   const isFavorite = (productId) => {
-    console.log("isFavorite")
     if(user) {
       if(user.emailVerified) {
         addFavorite(user.uid, productId)
-        setIsFavorited(!isFavorited)
         getFavorite(user?.uid)
       } else {
         handleOpen()
@@ -76,7 +60,6 @@ const Home = () => {
 
   const isNotFavorite = (productId) => {
     addFavorite(user.uid, productId)
-    setIsFavorited(!isFavorited)
   };
 
   return (
@@ -88,7 +71,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {
-        showMessage ? (
+        datas ? (
           <div className="container-fluid home">
             <div className="cardRow">
               {
@@ -97,28 +80,43 @@ const Home = () => {
                     <div className="homeCard">
                       <div className="favoriteButton" style={{ cursor: 'pointer' }}>
                         <span>
-                          <FavoriteBorderIcon
-                            onClick={() => isFavorite(item.id)}
-                            sx={{
-                              color: 'rgb(53, 212, 153)',
-                              '&:hover': {
-                                transition: 'color 0.3s',
-                                color: 'rgb(33, 150, 83)'
-                              }
-                            }}
-                          />
+                              {favorites.some(fav => fav.id === item.id) ? (
+                                <FavoriteIcon
+                                  onClick={() => isNotFavorite(item.id)}
+                                  sx={{
+                                    color: 'rgb(33, 150, 83)',
+                                    '&:hover': {
+                                      transition: 'color 0.3s',
+                                      color: 'rgb(33, 150, 83)'
+                                    }
+                                  }}
+                                />
+                              ) : (
+                                <FavoriteBorderIcon
+                                  onClick={() => isFavorite(item.id)}
+                                  sx={{
+                                    color: 'rgb(53, 212, 153)',
+                                    '&:hover': {
+                                      transition: 'color 0.3s',
+                                      color: 'rgb(33, 150, 83)'
+                                    }
+                                  }}
+                                />
+                              )}
+                            
                         </span>
                       </div>
                       
                       <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
                         <h6 className="prdctName pt-4">{ item.urunAdi.length > 20 ? item.urunAdi.substring(0, 20) + "..." : item.urunAdi }</h6>
-                        
-                        <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>
-                          { moneyFormat(item.fiyat) } TL
-                        </span>
-                        <span> 
-                          { item.sellers?.[0]?.saticiAdi }
-                        </span>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>
+                            { moneyFormat(item.fiyat) } TL
+                          </span>
+                          <span className="salesName"> 
+                            { item.sellers?.[0]?.saticiAdi }
+                          </span>
+                        </div>
                     </div>
                   </div>
                 ) : null

@@ -7,11 +7,10 @@ const FavoritesContextProvider = ({ children }) => {
 
     const addFavorite = (userId,urunId) => {
         const add = async () => {
-            console.log("çalıştı")
             const data = {
                 userId,
                 urunId
-            };
+            }
     
             const response = await fetch("http://localhost:8080/api/favorites/add", {
                 method: "POST",
@@ -21,21 +20,20 @@ const FavoritesContextProvider = ({ children }) => {
                 body: JSON.stringify(data)
             });
 
-            if (!response.ok) {
-                // Eğer hata durumu varsa fırlat
-                const errorData = await response.json();
-                throw new Error(errorData.message || "An error occurred");
+            const responseText = await response.text()
+            
+            try {
+                const responseJson = JSON.parse(responseText)
+            } catch (error) {
+                console.error("JSON parse hatası:", error)
             }
-    
-            return response.json();
-        };
+        }
     
         add().then((data) => {
-            console.log("thende")
-            console.log(data)
+            getFavorite(userId)
         }).catch((error) => {
             console.log(error)
-        });
+        })
     }
 
     const removeFavorite = (userId, urunId) => {
@@ -44,36 +42,32 @@ const FavoritesContextProvider = ({ children }) => {
             const data = {
                 userId,
                 urunId
-            };
+            }
     
             const response = await fetch("http://localhost:8080/api/favorites/remove", {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-                // Eğer hata durumu varsa fırlat
-                console.log("remove if içi")
-                const errorData = await response.json();
-                throw new Error(errorData.message || "An error occurred");
+                body: JSON.stringify({ userId, urunId })
+            })
+            
+            const responseText = await response.text(); // Yanıtı düz metin olarak al
+            console.log("Yanıt içeriği:", responseText); // Gelen yanıtı ekrana yazdır
+            
+            try {
+                const responseJson = JSON.parse(responseText); // JSON'a çevir
+                console.log("JSON formatında yanıt:", responseJson);
+            } catch (error) {
+                console.error("JSON parse hatası:", error);
             }
-            console.log("remove son satır")
-            return response.json();
-        };
+        }
     
         remove().then((data) => {
-            console.log("remove thende")
-            console.log(data)
             getFavorite(userId)
-            console.log("remove then son satır")
         }).catch((error) => {
-            console.log("remove catch")
             console.log(error)
-            console.log("remove catch son satır")
-        });
+        })
     }
 
     const getFavorite = (userId) => {
@@ -111,6 +105,7 @@ const FavoritesContextProvider = ({ children }) => {
             addFavorite,
             removeFavorite,
             getFavorite,
+            setFavorites,
             favorites
         }}>
             { children }

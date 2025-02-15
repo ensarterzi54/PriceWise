@@ -57,7 +57,6 @@ const ScrapeContextProvider = ({ children }) => {
     
         getData().then((data) => {
             setDatas(data)
-            console.log("datas: ",data)
         }).catch((error) => {
             console.log("error: ",error)
         });

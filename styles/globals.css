@@ -53,6 +53,7 @@ a {
 }
 
 .homeCard {
+  background: linear-gradient(to bottom, rgba(33, 150, 83, 0.15) 0%, #fff 40px);
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -73,7 +74,7 @@ a {
 
 .productImage {
   width: 100%;
-  height: 200px;
+  height: 140px;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -89,10 +90,15 @@ a {
 }
 
 .prdctPrice {
+  display: flex;
   margin-top: auto; /* Fiyatın kartın en altına yerleşmesini sağlar */
   text-align: left; /* Fiyatı sağa hizalar */
   font-weight: bold;
   font-size: 14px;
+}
+
+.salesName {
+  display: flex;
 }
 
 .favoriteButton {

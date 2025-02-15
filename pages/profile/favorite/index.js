@@ -62,18 +62,33 @@ const Favorite = () => {
                                 <div className="favoriteButton" style={{ cursor: 'pointer' }}>
                                     <FavoriteIcon
                                         onClick={() => handleOpen(item)} // Pass item to modal
-                                        sx={{ color: 'rgb(53, 212, 153)' }}
+                                        sx={{
+                                            color: 'rgb(53, 212, 153)',
+                                            transition: 'color 0.3s ease, transform 0.3s ease', // Renk ve ölçek geçişi ekler
+                                            cursor: 'pointer', // İmleci el işareti yapar
+                                            '&:hover': {
+                                                color: 'rgb(34, 179, 120)', // Hover durumunda farklı bir yeşil tonu
+                                                transform: 'scale(1.2)' // Hafif büyüme efekti ekler
+                                            },
+                                            '&:active': {
+                                                transform: 'scale(0.9)' // Tıklanınca küçülerek basılma efekti verir
+                                            }
+                                        }}
                                     />
                                 </div>
 
                                 <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                                <h6 className="prdctName pt-4">
-                                    {item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + '...' : item.urunAdi}
-                                </h6>
-                                <span style={{ color: systemTheme ? 'red' : 'black' }} className="prdctPrice">
-                                    {item.fiyat} TL
-                                </span>
-                                <span>{item.sellers?.[0]?.saticiAdi}</span>
+                                <div>
+                                    <h6 className="prdctName pt-4">
+                                        {item.urunAdi.length > 30 ? item.urunAdi.substring(0, 30) + '...' : item.urunAdi}
+                                    </h6>
+                                    <div>
+                                        <span style={{ color: systemTheme ? 'red' : 'black' }} className="prdctPrice">
+                                            {item.fiyat} TL
+                                        </span>
+                                        <span className="salesName">{item.sellers?.[0]?.saticiAdi}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}

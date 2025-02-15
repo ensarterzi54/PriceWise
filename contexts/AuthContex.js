@@ -86,7 +86,7 @@ const AuthContextProvider = ({ children }) => {
         signInWithPopup(auth, provider).then((res) => {
             addUser(res.user.uid, res.user.displayName, res.user.email, res.user.emailVerified, res.providerId, res.user.photoURL, res.user.stsTokenManager.accessToken)
             setUser(res.user)
-            addSQL(res.user.uid, email, password)
+            addSQL(res.user.uid, res.user.email, res.user.password)
             router.push("/")
         }).catch((err) => console.log(err))
     }
@@ -111,7 +111,18 @@ const AuthContextProvider = ({ children }) => {
                         addSQL(res.user.uid, email, password)
                     });
             }).catch((err) => {
-                console.log(err)
+                console.log("createUserEmailAndPassword err", err)
+                console.log(err.code)
+
+                if (err.code === "auth/email-already-in-use") {
+                    console.log("Bu e-posta adresi zaten kullanımda. Lütfen başka bir e-posta deneyin.")
+                } else if (err.code === "auth/weak-password") {
+                    console.log("Şifre çok zayıf. Lütfen daha güçlü bir şifre belirleyin.")
+                } else if (err.code === "auth/invalid-email") {
+                    console.log("Geçersiz e-posta adresi. Lütfen doğru formatta bir e-posta girin.")
+                } else {
+                    console.log("Bilinmeyen bir hata oluştu:", err.message);
+                }
             })
     }
 
@@ -134,6 +145,10 @@ const AuthContextProvider = ({ children }) => {
                 // ..
             });
     }
+
+    const sendEmail = () => {
+        sendEmailVerification(auth.currentUser)
+    }
     return (
         <AuthContext.Provider value={{
             signInWithGoogle,
@@ -141,6 +156,7 @@ const AuthContextProvider = ({ children }) => {
             createUserEmailAndPassword,
             signInEmailPassword,
             resetPassword,
+            sendEmail,
             count,
             user,
             userVerified

@@ -4,11 +4,14 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import { TextField, CircularProgress, Tooltip, Box, Card, Avatar, Button, IconButton } from '@mui/material'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { useSnackbar } from 'notistack';
 const Account = () => {
-  const { user } = useContext(AuthContext)
+  const { user, sendEmail } = useContext(AuthContext)
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(null);
 
+  const { enqueueSnackbar } = useSnackbar()
+  
   useEffect(() => {
     if (user) {
       setLoading(false)
@@ -29,6 +32,16 @@ const Account = () => {
         setImage(reader.result)
       }
       reader.readAsDataURL(file)
+    }
+  }
+
+  const sendMail = async () => {
+    try {
+      await sendEmail()
+      console.log('Email sent successfully')
+      enqueueSnackbar('Şifre sıfırlama mailiniz gönderildi!', { variant: 'info', vertical: 'top', horizontal: 'right' });
+    } catch (error) {
+      console.error('Error sending email:', error)
     }
   }
 
@@ -78,7 +91,7 @@ const Account = () => {
                     <CheckCircleOutlineIcon sx={{ color: 'green', marginTop: 1, marginLeft: 1 }} />
                   </Tooltip>
                 ) : (
-                  <Tooltip title="E-posta onaylama maili gönder">
+                  <Tooltip onClick={() => sendMail()} title="E-posta onaylama maili gönder">
                     <IconButton sx={{ marginLeft: 1 }}>
                       <MailOutlineIcon sx={{  color: 'blue' }} />
                     </IconButton>

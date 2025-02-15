@@ -234,7 +234,7 @@ const Login = () => {
                                                             textTransform: "none",
                                                             marginTop: '16px'
                                                         }}
-                                                        style={{ color: systemTheme ? "black" : "red" }}
+                                                        style={{ color: systemTheme ? "black" : "white" }}
                                                     >Kayıt ol
                                                     </Button> <br /><br />
                                                 </form>
