@@ -38,6 +38,7 @@ const ScrapeContextProvider = ({ children }) => {
     }
 
     const getRandomData = () => {
+        console.log("getRandomData")
         const getData = async () => {
             const response = await fetch("http://localhost:8080/api/products/homepage", {
                 method: "GET",

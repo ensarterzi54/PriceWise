@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useRouter } from 'next/router';
-
+import { TextField } from '@mui/material';
+import styles from "../favorite/favorite.module.css"
 const style = {
     position: 'absolute',
     top: '50%',
@@ -27,6 +28,8 @@ const Favorite = () => {
     const { getFavorite, removeFavorite, favorites } = useContext(FavoritesContext);
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null)
+    const [value, setValue] = useState('');
+    const [filteredFavorites, setFilteredFavorites] = useState(favorites);
     const router = useRouter();
 
     const handleOpen = (product) => {
@@ -42,6 +45,17 @@ const Favorite = () => {
         getFavorite(user?.uid);
     }, [selectedProduct, user]);
 
+    useEffect(() => {
+        if (!value) {
+            setFilteredFavorites(favorites);
+        } else {
+            const filtered = favorites.filter((item) =>
+                item.urunAdi.toLowerCase().includes(value.toLowerCase())
+            );
+            setFilteredFavorites(filtered);
+        }
+    }, [value, favorites]);
+
     const handleConfirm = (id) => {
         if (selectedProduct) {
             removeFavorite(user.uid, selectedProduct.id);
@@ -52,13 +66,58 @@ const Favorite = () => {
         }
     };
 
+    const handleFocus = () => {
+        console.log("Odaklandı")
+    }
+
+    const handleBlur = () => {
+        console.log("Odaktan çıkıldı")
+    }
+
     return (
         <div className="container">
+            <div className={`${styles.search} mb-4`}>
+                <div>
+                    <h3>Favorilerim</h3>
+                </div>
+                <TextField 
+                    value={value} 
+                    onChange={(e) => setValue(e.target.value)} 
+                    onFocus={handleFocus} // Odaklanma olayı
+                    onBlur={handleBlur}
+                    sx={{ 
+                        marginRight: '20px',
+                        width: '40ch',
+                        '& .MuiOutlinedInput-root': {
+                            backgroundColor: '#f0f0f0',
+                            '& fieldset': {
+                                borderColor: '#ccc'
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#888'
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#555'
+                            },
+                        },
+                        '& .MuiInputBase-input': {
+                            color: '#333',
+                            padding: '10px'
+                        },
+                    }} 
+                    label="Favorilerini ara" 
+                    variant="outlined" 
+                    size="small"
+                    InputLabelProps={{
+                        style: { color: '#333' } // Label color
+                    }}
+                />
+            </div>
             <div className="cardRow">
-                {favorites &&
-                    favorites.map((item) => (
-                        <div key={item.id} className="col-md-3 p-0">
-                            <div className="homeCard">
+                {filteredFavorites  &&
+                    filteredFavorites .map((item) => (
+                        <div key={item.id} className="col-md-3 mb-3 p-0">
+                            <div className="homeCard" style={{width: '90%'}}>
                                 <div className="favoriteButton" style={{ cursor: 'pointer' }}>
                                     <FavoriteIcon
                                         onClick={() => handleOpen(item)} // Pass item to modal

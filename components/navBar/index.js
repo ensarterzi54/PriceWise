@@ -166,10 +166,11 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
             <div className={`${styles.navBar}`}>
                 <div className={`${styles.logo} mb-2`}>
                     <Link href="/" style={linkStyle}>
-                        <Logo />
+                        {/* <Logo /> */}
+                        <img src="/PW-logo.png" alt="logo" style={{ width: "70px" }} />
                     </Link>
 
-                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '18px' }}>
+                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(245, 245, 245)", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '20px' }}>
                         Kategoriler
                     </Button>
 
@@ -186,6 +187,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                             horizontal: 'left'
                         }}
                         disableScrollLock={true}   //body ye eklenen padding right'ı engellemek için ekledim
+                        sx={{ maxWidth: '300px' }}
                     >
                         {
                             categories ? categories.map((item) =>
@@ -211,10 +213,31 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                         onChange={(e) => setValue(e.target.value)} 
                         onFocus={handleFocus} // Odaklanma olayı
                         onBlur={handleBlur}
-                        sx={{ width: '60ch' }} 
+                        sx={{ 
+                            width: '60ch',
+                            '& .MuiOutlinedInput-root': {
+                                backgroundColor: '#f0f0f0',
+                                '& fieldset': {
+                                    borderColor: '#ccc'
+                                },
+                                '&:hover fieldset': {
+                                    borderColor: '#888'
+                                },
+                                '&.Mui-focused fieldset': {
+                                    borderColor: '#555'
+                                },
+                            },
+                            '& .MuiInputBase-input': {
+                                color: '#333',
+                                padding: '10px'
+                            },
+                        }} 
                         label="Neyi ucuza aramak istersin?" 
                         variant="outlined" 
                         size="small"
+                        InputLabelProps={{
+                            style: { color: '#333' } // Label color
+                        }}
                         slotProps={{
                             input: {
                                 endAdornment: 

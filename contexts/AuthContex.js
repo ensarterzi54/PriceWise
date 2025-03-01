@@ -132,7 +132,9 @@ const AuthContextProvider = ({ children }) => {
                 router.push("/")
                 loginCount(res.user.uid, 1)
             }
-        )
+        ).catch((err) => {
+            console.log("err: ", err)
+        })
     }
 
     const resetPassword = (email) => {

@@ -2,26 +2,16 @@ import Head from "next/head";
 import { ScrapeContext } from "../contexts/ScrapeContext"
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContex";
-import { Box, Button, IconButton, LinearProgress, Modal, Skeleton, Typography } from "@mui/material";
+import { Box, Button, IconButton, LinearProgress, Skeleton, Typography } from "@mui/material";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { FavoritesContext } from "@/contexts/FavoritesContext";
-import CloseIcon from '@mui/icons-material/Close';
 import Link from "next/link";
 import { moneyFormat } from "../functions"
+import Modal from "@/components/modal";
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-}
+
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 const Home = () => {
@@ -32,15 +22,23 @@ const Home = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false)
+  const [modalContent, setModalContent] = useState({ open: false, title: '', description: '' });
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleModalOpen = (title, description) => {
+    setModalContent({ open: true, title, description });
+  };
+  
+  const handleModalClose = () => {
+    setModalContent({ open: false, title: '', description: '' });
+  };
 
   useEffect(() => {
+    console.log("[]")
     getRandomData()
   }, []);
 
   useEffect(()=> {
+    console.log("[user]")
     getFavorite(user?.uid)
   }, [user])
 
@@ -50,10 +48,10 @@ const Home = () => {
         addFavorite(user.uid, productId)
         getFavorite(user?.uid)
       } else {
-        handleOpen()
+        handleModalOpen('E-posta adresi doğrulanmadı.', 'Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.');
       }
     } else {
-      handleOpen()
+      handleModalOpen('Giriş Yapılmadı', 'Favorilere eklemek için lütfen giriş yapın.');
     }
     
   };
@@ -108,7 +106,7 @@ const Home = () => {
                       </div>
                       
                       <img src={item.resim_url} className="productImage" alt={item.urunAdi} />
-                        <h6 className="prdctName pt-4">{ item.urunAdi.length > 20 ? item.urunAdi.substring(0, 20) + "..." : item.urunAdi }</h6>
+                        <h6 className="prdctName pt-4">{ item.urunAdi.length > 35 ? item.urunAdi.substring(0, 35) + "..." : item.urunAdi }</h6>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <span style={{ color: systemTheme ? "red" : "black" }} className={`prdctPrice ${systemTheme && ``}`}>
                             { moneyFormat(item.fiyat) } TL
@@ -130,37 +128,8 @@ const Home = () => {
           </div>
         )
       }
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        BackdropProps={{ onClick: (event) => event.stopPropagation() }}
-        disableScrollLock={true}
-      >
-        <Box sx={style}>
-          <IconButton
-            onClick={handleClose}
-            sx={{ position: 'absolute', top: 8, right: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            E-posta adresi doğrulanmadı.
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Lütfen E-posta adresinize gelen bağlantıya tıklayarak doğrulayın.
-          </Typography>
-          <div className="mt-3">
-            <Button>
-              <Link href="https://mail.google.com/" target="_blank">Gmail'e git</Link>
-            </Button>
-          </div>
-          <div>
-            <Button onClick={()=>signOutWithGoogle()}>Çıkış yap</Button>
-          </div>
-        </Box>
-      </Modal>
+
+      <Modal open={modalContent.open} handleClose={handleModalClose} title={modalContent.title} description={modalContent.description} />
     </div>
   );
 }
