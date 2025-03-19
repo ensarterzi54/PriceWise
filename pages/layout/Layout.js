@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { ThemeContext } from '@/contexts/ThemeContext';
 import { useRouter } from 'next/router';
 import CloseIcon from '@mui/icons-material/Close';
+import FloatingButton from '@/components/langButton';
 
 const style = {
   position: 'absolute',
@@ -49,7 +50,8 @@ const Layout = ({ children }) => {
   }, [userVerified, count])
   
   return (
-    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }} >
+    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "#ECEBDE" }} >
+        <FloatingButton />
         {
           (user && userVerified == null) ?
               <div>

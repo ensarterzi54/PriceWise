@@ -5,12 +5,13 @@ import { TextField, CircularProgress, Tooltip, Box, Card, Avatar, Button, IconBu
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 const Account = () => {
   const { user, sendEmail } = useContext(AuthContext)
   const [loading, setLoading] = useState(true)
   const [image, setImage] = useState(null);
-
   const { enqueueSnackbar } = useSnackbar()
+  const { t } = useTranslation();
   
   useEffect(() => {
     if (user) {
@@ -79,12 +80,12 @@ const Account = () => {
               </div>
             </div>
             <div className="col-md-6">
-              <TextField id="outlined-required" label="Adınız" sx={{ width: 300, marginBottom: 4, marginTop: 2 }} size="small" />
+              <TextField id="outlined-required" label={t('Name')} sx={{ width: 300, marginBottom: 4, marginTop: 2 }} size="small" />
 
-              <TextField id="outlined-required" label="Soyadınız" sx={{ width: 300, marginBottom: 4 }} size="small" />
+              <TextField id="outlined-required" label={t('Surname')} sx={{ width: 300, marginBottom: 4 }} size="small" />
 
               <div>
-                <TextField disabled id="outlined-disabled" label="E-posta" defaultValue={user?.email} sx={{ width: 300 }} size="small" />
+                <TextField disabled id="outlined-disabled" label={t('E-mail')} defaultValue={user?.email} sx={{ width: 300 }} size="small" />
 
                 {user?.emailVerified ? (
                   <Tooltip title="Onaylanmış E-posta">
@@ -112,7 +113,7 @@ const Account = () => {
                         marginRight: "105px"
                       }}
                     >
-                      Değişiklikleri kaydet
+                      {t('Save Changes')}
                     </Button>
                   </div>
             </div>

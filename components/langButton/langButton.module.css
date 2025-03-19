@@ -1,0 +1,176 @@
+@-webkit-keyframes come-in {
+  0% {
+    -webkit-transform: translatey(100px);
+    transform: translatey(100px);
+    opacity: 0;
+  }
+  30% {
+    -webkit-transform: translateX(-50px) scale(0.4);
+    transform: translateX(-50px) scale(0.4);
+  }
+  70% {
+    -webkit-transform: translateX(0px) scale(1.2);
+    transform: translateX(0px) scale(1.2);
+  }
+  100% {
+    -webkit-transform: translatey(0px) scale(1);
+    transform: translatey(0px) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes come-in {
+  0% {
+    -webkit-transform: translatey(100px);
+    transform: translatey(100px);
+    opacity: 0;
+  }
+  30% {
+    -webkit-transform: translateX(-50px) scale(0.4);
+    transform: translateX(-50px) scale(0.4);
+  }
+  70% {
+    -webkit-transform: translateX(0px) scale(1.2);
+    transform: translateX(0px) scale(1.2);
+  }
+  100% {
+    -webkit-transform: translatey(0px) scale(1);
+    transform: translatey(0px) scale(1);
+    opacity: 1;
+  }
+}
+/* * {
+  margin: 0;
+  padding: 0;
+} */
+
+/* html,
+body {
+  background: #eaedf2;
+  font-family: "Roboto", sans-serif;
+} */
+
+.floatingContainer {
+  position: fixed;
+  width: 70px;
+  height: 70px;
+  bottom: 0;
+  right: 0;
+  margin: 35px 25px;
+}
+
+.floatingContainer:hover {
+  height: 160px;
+  background-color: #e8e3da;
+  border-radius: 10px;
+}
+
+.floatingContainer:hover .floatingButton {
+  box-shadow: 0 10px 25px rgba(44, 179, 240, 0.6);
+  -webkit-transform: translatey(5px);
+  transform: translatey(5px);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.floatElement:hover {
+    cursor: pointer;
+}
+
+.floatingContainer:hover .elementContainer .floatElement:nth-child(1) {
+  -webkit-animation: come-in 0.4s forwards 0.2s;
+  animation: come-in 0.4s forwards 0.2s;
+}
+
+.floatingContainer:hover .elementContainer .floatElement:nth-child(2) {
+  -webkit-animation: come-in 0.4s forwards 0.4s;
+  animation: come-in 0.4s forwards 0.4s;
+}
+
+.floatingContainer:hover .elementContainer .floatElement:nth-child(3) {
+  -webkit-animation: come-in 0.4s forwards 0.6s;
+  animation: come-in 0.4s forwards 0.6s;
+}
+.floatingContainer:hover .elementContainer .floatElement:nth-child(4) {
+  -webkit-animation: come-in 0.4s forwards 0.8s;
+  animation: come-in 0.4s forwards 0.8s;
+}
+.floatingContainer:hover .elementContainer .floatElement:nth-child(5) {
+  -webkit-animation: come-in 0.4s forwards 1s;
+  animation: come-in 0.4s forwards 1s;
+}
+.floatingContainer:hover .elementContainer .floatElement:nth-child(6) {
+  -webkit-animation: come-in 0.4s forwards 1.2s;
+  animation: come-in 0.4s forwards 1.2s;
+}
+
+.floatingContainer .floatingButton {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  bottom: 0;
+  border-radius: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  font-size: 23px;
+  z-index: 9999999;
+  box-shadow: 0 10px 25px -5px rgba(44, 179, 240, 0.6);
+  cursor: pointer;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.floatingContainer .floatElement {
+  position: relative;
+  display: block;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 15px auto;
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  line-height: 50px;
+  z-index: 0;
+  opacity: 0;
+  -webkit-transform: translateY(100px);
+  transform: translateY(100px);
+}
+
+.floatingContainer .floatElement .material-icons {
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+.floatingContainer .floatElement:nth-child(1) {
+  box-shadow: 0 20px 20px -10px rgba(66, 165, 245, 0.5);
+}
+
+.floatingContainer .floatElement:nth-child(2) {
+  box-shadow: 0 20px 20px -10px rgba(76, 175, 80, 0.5);
+}
+
+.floatingContainer .floatElement:nth-child(3) {
+  box-shadow: 0 20px 20px -10px rgba(255, 152, 0, 0.5);
+}
+
+.floatingContainer .floatElement:nth-child(4) {
+  box-shadow: 0 20px 20px -10px rgba(255, 152, 0, 0.5);
+}
+.floatingContainer .floatElement:nth-child(5) {
+  box-shadow: 0 20px 20px -10px rgba(255, 152, 0, 0.5);
+}
+.floatingContainer .floatElement:nth-child(6) {
+  box-shadow: 0 20px 20px -10px rgba(255, 152, 0, 0.5);
+}
+
+/* Mobil cihazlar için stil */
+@media only screen and (max-width: 768px) {
+  .floatingContainer {
+    display: block;
+    margin: 15px auto;
+  }
+}

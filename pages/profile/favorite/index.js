@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import { useRouter } from 'next/router';
 import { TextField } from '@mui/material';
 import styles from "../favorite/favorite.module.css"
+import { useTranslation } from 'react-i18next';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -31,6 +32,7 @@ const Favorite = () => {
     const [value, setValue] = useState('');
     const [filteredFavorites, setFilteredFavorites] = useState(favorites);
     const router = useRouter();
+    const { t } = useTranslation();
 
     const handleOpen = (product) => {
         console.log("handleOpen' a parametre gelen ürün: ", product)
@@ -78,7 +80,7 @@ const Favorite = () => {
         <div className="container">
             <div className={`${styles.search} mb-4`}>
                 <div>
-                    <h3>Favorilerim</h3>
+                    <h3>{t('My Favorites')}</h3>
                 </div>
                 <TextField 
                     value={value} 
@@ -105,7 +107,7 @@ const Favorite = () => {
                             padding: '10px'
                         },
                     }} 
-                    label="Favorilerini ara" 
+                    label={t('Search your favorites')} 
                     variant="outlined" 
                     size="small"
                     InputLabelProps={{

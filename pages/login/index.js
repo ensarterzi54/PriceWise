@@ -108,7 +108,8 @@ const Login = () => {
                                         <Box sx={{ width: '100%' }}>
                                             <div className={`${styles.logo} mb-4 mt-3`}>
                                                 <Link href="/" style={linkStyle}>
-                                                    <Logo />
+                                                    {/* <Logo /> */}
+                                                    <img src="/PW-logo.png" alt="logo" style={{ width: "120px" }} />
                                                 </Link>
                                             </div>
                                             <h6 className="mb-4">Devam etmek için hesap oluştur ya da kayıt ol</h6>

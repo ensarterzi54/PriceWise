@@ -19,6 +19,8 @@ import { ThemeContext } from '@/contexts/ThemeContext';
 import Badge from '@mui/material/Badge';
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
+import { useTranslation } from 'react-i18next';
+console.log("werwer: ", useTranslation)
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
       backgroundColor: 'rgb(53, 212, 153)',
@@ -102,10 +104,11 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
     const [value, setValue] = useState("")
-    const { getCategories, categories } = useContext(ScrapeContext)
+    const { getCategories, categories, getSearchedProducts, searchedProductsData } = useContext(ScrapeContext)
     const { signOutWithGoogle, user } = useContext(AuthContext)
     const { systemTheme, setSystemTheme } = useContext(ThemeContext)
     const router = useRouter();
+    const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [anchorElCategories, setAnchorElCategories] = useState(null);
@@ -159,6 +162,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
 
     useEffect(() => {
         getCategories()
+        getSearchedProducts()
     }, [])
 
     return (
@@ -170,8 +174,8 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                         <img src="/PW-logo.png" alt="logo" style={{ width: "70px" }} />
                     </Link>
 
-                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(245, 245, 245)", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '20px' }}>
-                        Kategoriler
+                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "#EAFAEA", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '20px' }}>
+                        { t('Categories') }
                     </Button>
 
                     <Menu
@@ -232,7 +236,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                 padding: '10px'
                             },
                         }} 
-                        label="Neyi ucuza aramak istersin?" 
+                        label={t('What do you want to look for cheaply?')}
                         variant="outlined" 
                         size="small"
                         InputLabelProps={{
@@ -285,7 +289,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                                     <Avatar src={user && user.photoURL} />
                                                 }
                                             </IconButton>
-                                            <span style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>
+                                            <span style={{ color: systemTheme ? "rgb(33, 33, 33)" : "#EAFAEA" }}>
                                                 { user ? user.email : null }
                                             </span>
                     
@@ -321,17 +325,17 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                                 >
                                                     <Link href="/profile/favorite" style={linkStyle}>
                                                         <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}>
-                                                            <PermIdentityIcon />Profil
+                                                            <PermIdentityIcon />{ t('Profile') }
                                                         </MenuItem>
                                                     </Link>
                                                     <Link href="/" style={linkStyle}>
                                                         <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}>
-                                                            <NotificationsNoneIcon />Takip Listem
+                                                            <NotificationsNoneIcon />{ t('Follow List') }
                                                         </MenuItem>
                                                     </Link>
                                                     <Link href="/" style={linkStyle} onClick={() => signOutWithGoogle()}>
                                                         <MenuItem onClick={handleMenuClose} sx={{ borderBottom: 'none', boxShadow: 'none' }}>
-                                                            <LogoutIcon />Çıkış Yap
+                                                            <LogoutIcon />{ t('Log Out') }
                                                         </MenuItem>
                                                     </Link>
                                                 </MenuList>
@@ -350,7 +354,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                                 <IconButton>
                                                     <Avatar />
                                                 </IconButton>
-                                                <Link href="/login" style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>Giriş Yap</Link>
+                                                <Link href="/login" style={{ color: systemTheme ? "rgb(33, 33, 33)" : "rgb(246, 246, 246)" }}>{ t('Log In') }</Link>
                                                 <FormGroup style={{display: "inline", margin: "0px", padding:"0px"}}>
                                                     <FormControlLabel
                                                         style={{ margin: "0px", padding:"0px"}}

@@ -1,11 +1,16 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContex";
+import { onValue, push, ref } from "firebase/database";
+import { database } from "../firebase/firebaseConfig"
 
 export const ScrapeContext = createContext(null)
 
 const ScrapeContextProvider = ({ children }) => {
+    const { user } = useContext(AuthContext)
     const [datas, setDatas] = useState([])
     const [categories, setCategories] = useState([])
     const [filterProducts, setFilterProducts] = useState([])
+    const [searchedProductsData, setSearchedProductsData] = useState([]);
     
     const getData = (value) => {
 
@@ -32,6 +37,7 @@ const ScrapeContextProvider = ({ children }) => {
         postData().then((data) => {
             console.log("dataaa: ",data)
             setDatas(data)
+            searchedProducts(value)
         }).catch((error) => {
             console.log("error: ",error)
         });
@@ -112,12 +118,39 @@ const ScrapeContextProvider = ({ children }) => {
         });
     }
 
+    const searchedProducts = (value) => {
+        const searchRef = ref(database, `userSearchs/${user.uid}`);
+    
+        push(searchRef, { value });
+    }
+
+    const getSearchedProducts = () => {
+        if (!user) {
+            console.error("User is not authenticated");
+            return;
+        }
+
+        const searchRef = ref(database, `userSearchs/${user?.uid}`);
+    
+        onValue(searchRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("data: ", data)
+
+            if (data) {
+                setSearchedProductsData(Object.values(data)); // Update state with fetched data
+            }
+            console.log("searchedProductsData: ", searchedProductsData)
+        });
+    }
+
     return (
         <ScrapeContext.Provider value={{
             getRandomData,
             getData,
             getCategories,
             productsByCategory,
+            getSearchedProducts,
+            searchedProductsData,
             datas,
             categories,
             filterProducts

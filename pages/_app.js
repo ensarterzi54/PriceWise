@@ -5,7 +5,7 @@ import ScrapeContextProvider from "@/contexts/ScrapeContext";
 import { SnackbarProvider } from 'notistack';
 import ThemeContextProvider from "@/contexts/ThemeContext";
 import FavoritesContextProvider from "@/contexts/FavoritesContext";
-
+import "../lib/i18n";
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
@@ -15,7 +15,9 @@ export default function App({ Component, pageProps }) {
           <FavoritesContextProvider>
             <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
               <Layout>
-                {getLayout(<Component {...pageProps} />)}
+                {getLayout(
+                    <Component {...pageProps} />
+                )}
               </Layout>
             </SnackbarProvider>
           </FavoritesContextProvider>
