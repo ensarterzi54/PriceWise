@@ -89,19 +89,19 @@ const Account = () => {
 
                 {user?.emailVerified ? (
                   <Tooltip title="Onaylanmış E-posta">
-                    <CheckCircleOutlineIcon sx={{ color: 'green', marginTop: 1, marginLeft: 1 }} />
+                    <CheckCircleOutlineIcon sx={{ color: '#35d499', marginTop: 1, marginLeft: 1 }} />
                   </Tooltip>
                 ) : (
                   <Tooltip onClick={() => sendMail()} title="E-posta onaylama maili gönder">
                     <IconButton sx={{ marginLeft: 1 }}>
-                      <MailOutlineIcon sx={{  color: 'blue' }} />
+                      <MailOutlineIcon sx={{  color: '#35d499' }} />
                     </IconButton>
                   </Tooltip>
                 )}
               </div>
             </div>
           </div>
-          <div classnName="container">
+          <div className="container">
             <div className="row">
                   <div className="col-md-12 d-flex justify-content-end">
                     <Button 
@@ -110,7 +110,12 @@ const Account = () => {
                       sx={{ 
                         textTransform: "none",
                         marginTop: 5,
-                        marginRight: "105px"
+                        marginRight: "105px",
+                        backgroundColor: '#35d499',
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: '#2db387', // Darker shade for hover effect
+                        }
                       }}
                     >
                       {t('Save Changes')}

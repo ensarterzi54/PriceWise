@@ -44,7 +44,6 @@ const ScrapeContextProvider = ({ children }) => {
     }
 
     const getRandomData = () => {
-        console.log("getRandomData")
         const getData = async () => {
             const response = await fetch("http://localhost:8080/api/products/homepage", {
                 method: "GET",
@@ -119,16 +118,14 @@ const ScrapeContextProvider = ({ children }) => {
     }
 
     const searchedProducts = (value) => {
+        console.log("searchedProducts")
         const searchRef = ref(database, `userSearchs/${user.uid}`);
     
         push(searchRef, { value });
     }
 
-    const getSearchedProducts = () => {
-        if (!user) {
-            console.error("User is not authenticated");
-            return;
-        }
+    const getSearchedProducts = (user) => {
+        console.log("object")
 
         const searchRef = ref(database, `userSearchs/${user?.uid}`);
     
@@ -139,8 +136,9 @@ const ScrapeContextProvider = ({ children }) => {
             if (data) {
                 setSearchedProductsData(Object.values(data)); // Update state with fetched data
             }
-            console.log("searchedProductsData: ", searchedProductsData)
-        });
+            
+        })
+        console.log("searchedProductsData: ", searchedProductsData)
     }
 
     return (

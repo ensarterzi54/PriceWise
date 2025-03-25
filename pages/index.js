@@ -10,6 +10,8 @@ import { FavoritesContext } from "@/contexts/FavoritesContext";
 import Link from "next/link";
 import { moneyFormat } from "../functions"
 import Modal from "@/components/modal";
+import IaDropDown from "@/components/iaDropDown";
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -23,6 +25,8 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState({ open: false, title: '', description: '' });
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
 
   const handleModalOpen = (title, description) => {
     setModalContent({ open: true, title, description });
@@ -33,12 +37,10 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log("[]")
     getRandomData()
   }, []);
 
   useEffect(()=> {
-    console.log("[user]")
     getFavorite(user?.uid)
   }, [user])
 
@@ -76,8 +78,8 @@ const Home = () => {
                 datas ? datas.map((item) => 
                   <div key={item.id} className="col-md-3 mt-3 p-0">
                     <div className="homeCard">
-                      <div className="favoriteButton" style={{ cursor: 'pointer' }}>
-                        <span>
+                      <div className="favoriteButton" style={{ cursor: 'pointer', display: 'flex' }}>
+                              <IaDropDown />
                               {favorites.some(fav => fav.id === item.id) ? (
                                 <FavoriteIcon
                                   onClick={() => isNotFavorite(item.id)}
@@ -102,7 +104,6 @@ const Home = () => {
                                 />
                               )}
                             
-                        </span>
                       </div>
                       
                       <img src={item.resim_url} className="productImage" alt={item.urunAdi} />

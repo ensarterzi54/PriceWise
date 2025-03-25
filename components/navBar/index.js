@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { AuthContext } from "../../contexts/AuthContex"
 import React, { useContext, useEffect, useState } from 'react'
-import { Avatar, Box, Button, IconButton, InputAdornment, Menu, MenuItem, MenuList, TextField } from "@mui/material"
+import { Avatar, Box, Button, IconButton, InputAdornment, Menu, MenuItem, MenuList, TextField, List, ListItem, ListItemText, Paper } from "@mui/material"
 import { useRouter } from 'next/router';
 import SearchIcon from '@mui/icons-material/Search';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
@@ -20,7 +20,10 @@ import Badge from '@mui/material/Badge';
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
 import { useTranslation } from 'react-i18next';
-console.log("werwer: ", useTranslation)
+import { onValue, ref, set } from "firebase/database";
+import { database } from "@/firebase/firebaseConfig";
+import HistoryIcon from '@mui/icons-material/History';
+import CloseIcon from '@mui/icons-material/Close';
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
       backgroundColor: 'rgb(53, 212, 153)',
@@ -104,22 +107,25 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
     const [value, setValue] = useState("")
-    const { getCategories, categories, getSearchedProducts, searchedProductsData } = useContext(ScrapeContext)
+    const { getCategories, categories, getSearchedProducts } = useContext(ScrapeContext)
     const { signOutWithGoogle, user } = useContext(AuthContext)
     const { systemTheme, setSystemTheme } = useContext(ThemeContext)
     const router = useRouter();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = useState(null);
-
+    const [searchedProductsData, setSearchedProductsData] = useState([])
+    const [listWatch, setListWatch] = useState(false)
     const [anchorElCategories, setAnchorElCategories] = useState(null);
 
     const handleFocus = () => {
         console.log("handleFocus")
+        setListWatch(true)
         setFocus(true)
         setBackdropOpen(true)
     };
     
     const handleBlur = () => {
+        setListWatch(false)
         setFocus(false)
         setBackdropOpen(false)
     };
@@ -162,8 +168,19 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
 
     useEffect(() => {
         getCategories()
-        getSearchedProducts()
     }, [])
+
+    useEffect(() => {
+        if (!user) return
+    
+        const searchRef = ref(database, `userSearchs/${user?.uid}`)
+        const unsubscribe = onValue(searchRef, (snapshot) => {
+            const data = snapshot.val()
+            setSearchedProductsData(data ? Object.values(data) : [])
+        })
+    
+        return () => unsubscribe()
+    }, [user]);
 
     return (
         <div className={`${styles.nav} pt-2`}>
@@ -174,7 +191,17 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                         <img src="/PW-logo.png" alt="logo" style={{ width: "70px" }} />
                     </Link>
 
-                    <Button startIcon={<DehazeIcon />} className="ml-4 pr-0 mr-1 pt-2" color="inherit" onClick={handleMenuOpenCategories} style={{ color: systemTheme ? "rgb(33, 33, 33)" : "#EAFAEA", textTransform: "none", fontFamily: 'Roboto Mono', fontSize: '20px' }}>
+                    <Button 
+                        startIcon={<DehazeIcon />} 
+                        className="ml-4 pr-0 mr-1 pt-2" 
+                        color="inherit" 
+                        onClick={handleMenuOpenCategories} 
+                        style={{ 
+                            color: systemTheme ? "rgb(33, 33, 33)" : "#EAFAEA", 
+                            textTransform: "none", 
+                            fontFamily: '"Lato", sans-serif', fontSize: '20px' 
+                        }}
+                    >
                         { t('Categories') }
                     </Button>
 
@@ -211,7 +238,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                         }
                     </Menu>
                 </div>
-                <div className="mu-input pt-1">
+                <div className={`mu-input pt-1`}>
                     <TextField 
                         value={value} 
                         onChange={(e) => setValue(e.target.value)} 
@@ -253,6 +280,39 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                             }
                         }}
                     />
+                    {
+                        listWatch ? (
+                            <Paper elevation={3} sx={{ width: "60ch", maxHeight: 200, overflowY: "auto", position: 'absolute', zIndex: 1 }}>
+                                <List>
+                                    {searchedProductsData
+                                    ? searchedProductsData.map((item, index) => (
+                                        <ListItem
+                                            key={index}
+                                            sx={{
+                                                "&:hover": {
+                                                    backgroundColor: "#f5f5f5",
+                                                },
+                                                cursor: "pointer",
+                                                fontSize: "5px",
+                                                fontFamily: '"Lato", sans-serif'
+                                            }}
+                                        >
+                                            <HistoryIcon sx={{ marginRight: 1 }} />
+                                            <ListItemText primary={item.value} />
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={() => console.log('Çarpı tıklanmış!')}  // Buraya tıklandığında yapılacak işlemi ekleyebilirsiniz
+                                            >
+                                                <CloseIcon sx={{ fontSize: 18 }} />  {/* Çarpı ikonu */}
+                                            </IconButton>
+                                        </ListItem>
+                                        ))
+                                    : null}
+                                </List>
+                            </Paper>
+                        ) : null
+                    }
                 </div>
                 <div>
                     { 
