@@ -14,7 +14,7 @@ import Button from '@/components/button';
 
 const ProductDetail = () => {
     const router = useRouter()
-    const { productDetail, urunAdi, fiyat, resim_url, sellers, whichAi } = router.query
+    const { productDetail, urunAdi, fiyat, resim_url, sellers, url, whichAi } = router.query
     const { askAi, detail } = useContext(AiContext)
     const [productDetailText, setProductDetailText] = useState("")
 
@@ -104,7 +104,7 @@ const ProductDetail = () => {
                                         }
                                         <span className={styles.price}>{ moneyFormat(Number(fiyat)) } TL</span>
                                         <div style={{ marginLeft: '50px', display: 'inline', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Button />
+                                        <Button url={url} />
                                     </div>
                                     </div>
                                 </div>
@@ -135,6 +135,7 @@ const ProductDetail = () => {
 
             <h5>
                 {
+                    !productDetailText &&
                     <Typewriter
                         words={["Yapay Zeka ile Analiz Ediliyor..."]}
                         loop={1}

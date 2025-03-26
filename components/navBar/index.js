@@ -26,7 +26,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import CloseIcon from '@mui/icons-material/Close';
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
-      backgroundColor: 'rgb(53, 212, 153)',
+      backgroundColor: '#F2B28C',
       color: 'rgb(245, 245, 245)',
       boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
       '&::after': {
@@ -334,7 +334,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                                                         right: 0,
                                                                         width: 15,
                                                                         height: 15,
-                                                                        backgroundColor: 'rgb(53, 212, 153)',
+                                                                        backgroundColor: '#F2B28C',
                                                                         borderRadius: '50%',
                                                                         display: 'flex',
                                                                         justifyContent: 'center',

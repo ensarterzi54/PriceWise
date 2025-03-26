@@ -85,10 +85,10 @@ const Home = () => {
                                 <FavoriteIcon
                                   onClick={() => isNotFavorite(item.id)}
                                   sx={{
-                                    color: 'rgb(33, 150, 83)',
+                                    color: 'rgb(242, 179, 143)',
                                     '&:hover': {
                                       transition: 'color 0.3s',
-                                      color: 'rgb(33, 150, 83)'
+                                      color: 'rgb(242, 179, 143)'
                                     }
                                   }}
                                 />
@@ -96,10 +96,10 @@ const Home = () => {
                                 <FavoriteBorderIcon
                                   onClick={() => isFavorite(item.id)}
                                   sx={{
-                                    color: 'rgb(53, 212, 153)',
+                                    color: 'rgb(242, 179, 143)',
                                     '&:hover': {
                                       transition: 'color 0.3s',
-                                      color: 'rgb(33, 150, 83)'
+                                      color: 'rgb(242, 179, 143)'
                                     }
                                   }}
                                 />

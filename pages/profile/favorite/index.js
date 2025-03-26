@@ -124,7 +124,7 @@ const Favorite = () => {
                                     <FavoriteIcon
                                         onClick={() => handleOpen(item)} // Pass item to modal
                                         sx={{
-                                            color: 'rgb(53, 212, 153)',
+                                            color: '#F2B28C',
                                             transition: 'color 0.3s ease, transform 0.3s ease', // Renk ve ölçek geçişi ekler
                                             cursor: 'pointer', // İmleci el işareti yapar
                                             '&:hover': {

@@ -26,9 +26,9 @@ const ProfileTabs = () => {
                 sx={{ 
                 overflow: "hidden", 
                 padding: "3px 0px", 
-                color: '#35d499',
+                color: 'rgb(242, 179, 143)',
                 '& .MuiTabs-indicator': {
-                    backgroundColor: '#35d499', // Change this color to your desired color
+                    backgroundColor: 'rgb(242, 179, 143)', // Change this color to your desired color
                 }
                 }}
             >
@@ -51,8 +51,8 @@ const ProfileTabs = () => {
                         overflow: "hidden"
                     }}
                     label={
-                        <div style={{ display: 'flex', alignItems: 'center', color: '#35d499' }}>
-                            <FavoriteIcon sx={{ marginRight: '8px', color: '#35d499' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', color: 'rgb(242, 179, 143)' }}>
+                            <FavoriteIcon sx={{ marginRight: '8px', color: 'rgb(242, 179, 143)' }} />
                             <span style={{ paddingTop: '5px' }}>{t('Favorites')}</span>
                         </div>
                     }
@@ -75,8 +75,8 @@ const ProfileTabs = () => {
                         }
                     }} 
                     label={
-                        <div style={{ display: 'flex', alignItems: 'center', color: '#35d499' }}>
-                        <PersonIcon sx={{ marginRight: '8px', color: '#35d499', fontSize: 28 }} />
+                        <div style={{ display: 'flex', alignItems: 'center', color: 'rgb(242, 179, 143)' }}>
+                        <PersonIcon sx={{ marginRight: '8px', color: 'rgb(242, 179, 143)', fontSize: 28 }} />
                         <span style={{ paddingTop: '5px' }}>{t('Account')}</span>
                         </div>
                     } 
