@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
   }, [userVerified, count])
   
   return (
-    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "#ECEBDE" }} >
+    <div style={{ backgroundColor: systemTheme ? "rgb(33, 33, 33)" : "rgb(255, 255, 255)" }} >
         <FloatingButton />
         {
           (user && userVerified == null) ?

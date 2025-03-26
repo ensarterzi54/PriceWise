@@ -79,7 +79,8 @@ const Home = () => {
                   <div key={item.id} className="col-md-3 mt-3 p-0">
                     <div className="homeCard">
                       <div className="favoriteButton" style={{ cursor: 'pointer', display: 'flex' }}>
-                              <IaDropDown />
+                              {console.log("item, ", item)}
+                              <IaDropDown item={item} sellers={item.sellers}/>
                               {favorites.some(fav => fav.id === item.id) ? (
                                 <FavoriteIcon
                                   onClick={() => isNotFavorite(item.id)}

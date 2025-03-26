@@ -325,7 +325,7 @@ const NavBar = ({ setFocus, setAvatarFocus, setBackdropOpen }) => {
                                                 {
                                                     user.emailVerified ?
                                                         <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                                                            <Avatar src={user && user.photoURL} />
+                                                            <Avatar src={user?.photoURL} />
                                                             {user && (
                                                                 <Box
                                                                     sx={{

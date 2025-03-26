@@ -110,7 +110,7 @@ const Account = () => {
                       sx={{ 
                         textTransform: "none",
                         marginTop: 5,
-                        marginRight: "105px",
+                        marginRight: "155px",
                         backgroundColor: '#35d499',
                         color: '#fff',
                         '&:hover': {

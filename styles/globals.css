@@ -109,3 +109,31 @@ a {
 .clr {
   color:rgb(207, 62, 62);
 }
+
+
+/* satıcıya git utonunun */
+:root {
+  --dark: 0;
+  --transition: 0.28s;
+  --font-size: 2rem;
+  --bg: hsl(0 0% calc((100 - (var(--dark, 0) * 100)) * 1%));
+  --color: hsl(0 0% calc(var(--dark) * 100%));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dark: 1;
+  }
+}
+
+
+
+@font-face {
+  font-family: "Geist Sans";
+  src: url("https://assets.codepen.io/605876/GeistVF.ttf") format("truetype");
+}
+
+@keyframes fly-by {
+	0% { translate: -100% -50%; }
+	100% { translate: var(--distance) -50%; }
+}

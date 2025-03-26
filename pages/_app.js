@@ -6,6 +6,7 @@ import { SnackbarProvider } from 'notistack';
 import ThemeContextProvider from "@/contexts/ThemeContext";
 import FavoritesContextProvider from "@/contexts/FavoritesContext";
 import "../lib/i18n";
+import AiContextProvider, { AiContext } from "@/contexts/AiContext";
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
@@ -13,13 +14,15 @@ export default function App({ Component, pageProps }) {
       <AuthContextProvider>
         <ScrapeContextProvider>
           <FavoritesContextProvider>
-            <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
-              <Layout>
-                {getLayout(
-                    <Component {...pageProps} />
-                )}
-              </Layout>
-            </SnackbarProvider>
+            <AiContextProvider>
+              <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <Layout>
+                  {getLayout(
+                      <Component {...pageProps} />
+                  )}
+                </Layout>
+              </SnackbarProvider>
+            </AiContextProvider>
           </FavoritesContextProvider>
         </ScrapeContextProvider>
       </AuthContextProvider>

@@ -1,16 +1,9 @@
 import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'  // 🔥 URL'den aktif sekmeyi almak için
 import Box from '@mui/material/Box'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
 import styles from './profile.module.css'
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonIcon from '@mui/icons-material/Person';
-import { Height } from '@mui/icons-material'
 import dynamic from 'next/dynamic'
 
-const ProfileTabs = dynamic(() => import('../../components/profileTabs'), { ssr: false });
+const ProfileTabs = dynamic(() => import('../../components/profileTabs'), { ssr: false })
 
 const ProfileLayout = ({ children }) => {
   const profileStyle = {

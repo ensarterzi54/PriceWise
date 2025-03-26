@@ -1,8 +1,24 @@
-import React from "react";
-import styles from "./iaDropDown.module.css";
+import React, { useContext, useEffect } from "react";
+import { useRouter } from 'next/router';
 import { Tooltip } from "@mui/material";
+import styles from "./iaDropDown.module.css";
+import { AiContext } from "@/contexts/AiContext";
 
-const IaDropDown = () => {
+const IaDropDown = ({ item, sellers }) => {
+  const router = useRouter()
+  const { setDetail } = useContext(AiContext)
+  useEffect(() => {
+    console.log("sellerssss: ", sellers)
+  }, []);
+  const handleClick = (val, aiName) => {
+    console.log("11111111111111111111",val, typeof aiName)
+    setDetail("")
+    router.push({
+      pathname: `/productDetail/${encodeURIComponent(item.urunAdi)}`,
+      query: { ...val, whichAi: aiName, sellers: sellers?.[0]?.saticiAdi }
+    })
+  }
+
   return (
     <div style={{ display: "inline" }}>
       <nav role="navigation" className={styles.primaryNavigation}>
@@ -37,7 +53,7 @@ const IaDropDown = () => {
                           },
                         },
                       }}>
-                    <a href="#" className={styles.aLink}>Deepseek sor </a>
+                    <a href="#" onClick={() => handleClick(item, "analyze_ollama")} className={styles.aLink}>Deepseek sor </a>
                 </Tooltip>
               </li>
               <li>
@@ -68,7 +84,7 @@ const IaDropDown = () => {
                         },
                     }}
                 >
-                    <a href="#" className={styles.aLink}>Gemini sor</a>
+                    <a href="#" onClick={() => handleClick(item, "analyze_gemini")} className={styles.aLink}>Gemini sor</a>
                 </Tooltip>
               </li>
             </ul>
